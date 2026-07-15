@@ -56,7 +56,9 @@ Stored note: final line/cone answer = cast real/fake **XOR** release (fake relea
 
 ## Resolution timeline (fixed order, outputs)
 
-Positions for 1 & 4: supports N / DPS S, per group 3 stack + 1 spread.
+Positions for 1 & 4: **supports stack N / spread W, DPS stack S / spread E**; per group 3 stack +
+1 spread. The tool's SUP/DPS toggle only appends that letter to the stack/spread wording — no
+mechanic branches on it.
 
 1. **Exdeath SHORT** — your short-timer debuff resolves: 💧/⚡ → stack/spread per table;
    💣 → fill a stack + bomb action. Each debuff resolves exactly once.
@@ -75,6 +77,12 @@ Inputs (in cast order): GC1 real/fake + my debuff (radio 💧⚡💣) + 👁 tog
 + 👁 toggle); Chaos2 real/fake; line & cone real/fake + release real/fake each.
 Everything else is derived. Output: the 7 rows above with personal answers, each tagged with its
 source cast (GC1/GC2).
+
+The 8 real/fake judgements (`gc1rf, c1rf, gc2rf, c2rf, linerf, conerf, linerel, conerel`) form a
+fixed sequence in boss order; the tool highlights the first unset one and `R`/`F` act on it. That
+focus is *derived*, not stored — no advance logic, and undo rewinds it for free. The debuff/element
+keys are deliberately global rather than scoped to the highlighted card, because GC1's debuffs land
+after its cast bar has already been judged (i.e. after focus has moved on). See README for the map.
 
 Icons (xivapi.com/i/215000/`<id>`.png): water 215696, lightning 215623, bomb 215727, gaze 215588,
 Inferno 215902, Tsunami 215903. Lightning and bomb icons look similar — color-code them.
