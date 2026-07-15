@@ -1,0 +1,378 @@
+<!--
+  UMAD P4 real/fake cheat sheet — personal tool.
+  Press inputs in boss cast order; the resolution timeline at the bottom is computed.
+  Refs: https://raidplan.io/plan/j33r35wvfp5xg7dd , https://raidplan.io/plan/guufe9q559evt7pj
+  Original tool: https://aweiyourdog.github.io/ff14-kfk-p4/ff14kfkp4
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>UMAD P4 Cheat Sheet</title>
+<style>
+    html, body {
+        margin: 0; padding: 0;
+        background: #0f0f0f; color: #fff;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+    }
+    body { box-sizing: border-box; padding: 2px 6px 10px; max-width: 560px; margin: 0 auto; }
+
+    .header-area {
+        display: flex; align-items: center; gap: 6px;
+        border-bottom: 2px solid #ffcc00; padding: 4px 0 5px;
+        position: sticky; top: 0; background: #0f0f0f; z-index: 100;
+    }
+    .title { font-size: 15px; color: #ffcc00; font-weight: bold; flex: 1; }
+    .reset-btn { background: #ff3333; color: #fff; border: none; padding: 6px 14px; border-radius: 4px; font-size: 13px; font-weight: bold; cursor: pointer; }
+
+    .section-title { font-size: 12px; color: #bbb; margin: 8px 0 2px; font-weight: bold; border-left: 3px solid #ffcc00; padding-left: 6px; }
+
+    .cast { margin-top: 6px; border: 1px solid #333; border-radius: 8px; overflow: hidden; }
+    .cast-head {
+        display: flex; align-items: center; gap: 6px; row-gap: 5px; flex-wrap: wrap;
+        padding: 6px 8px; background: rgba(255,255,255,0.06);
+    }
+    .cast-head.judged-real { background: rgba(77, 173, 255, 0.18); }
+    .cast-head.judged-fake { background: rgba(255, 77, 77, 0.18); }
+    .cast-title { font-weight: bold; font-size: 14px; white-space: nowrap; }
+    .cast-time { font-size: 11px; color: #999; font-weight: normal; }
+
+    .rf-group { display: flex; gap: 5px; flex-shrink: 0; margin-left: auto; }
+    .rf-btn {
+        border: 1px solid #666; background: #222; color: #fff;
+        border-radius: 6px; cursor: pointer;
+        display: flex; align-items: center; justify-content: center; line-height: 1;
+        padding: 9px 0; width: 62px; font-size: 18px;
+    }
+    .rf-btn.sel-real { background: #1c6fc4; border-color: #9fd1ff; }
+    .rf-btn.sel-fake { background: #c43a3a; border-color: #ffb3b3; }
+
+    .sub {
+        display: flex; align-items: center; gap: 6px; row-gap: 5px; flex-wrap: wrap;
+        padding: 6px 8px; border-top: 1px solid #222; background: rgba(255,255,255,0.02);
+    }
+    .sub-label { font-size: 11px; font-weight: bold; color: #999; width: 84px; flex-shrink: 0; }
+    .pick-group { display: flex; gap: 5px; }
+    .pick-btn {
+        border: 1px solid #555; background: #1a1a1a;
+        border-radius: 6px; cursor: pointer; padding: 3px;
+        display: flex; align-items: center; justify-content: center;
+        min-width: 44px; height: 40px; box-sizing: border-box;
+        font-size: 12px; font-weight: bold; color: #ddd;
+    }
+    .pick-btn img { height: 32px; width: auto; border-radius: 3px; display: block; }
+    .pick-btn.sel { background: #3a3a12; border-color: #ffcc00; box-shadow: 0 0 0 1px #ffcc00; }
+    .pick-btn.word { padding: 3px 10px; }
+    .pick-btn.auto { pointer-events: none; }
+    .auto-label { font-size: 12px; color: #ffcc00; font-weight: bold; white-space: nowrap; }
+
+    .rel-wrap { display: flex; flex-direction: column; flex-shrink: 0; margin-left: auto; }
+    .rel-label { font-size: 10px; color: #999; text-align: center; margin-bottom: 2px; }
+
+    .note { font-size: 10px; color: #777; padding: 4px 8px 5px; border-top: 1px solid #1c1c1c; line-height: 1.35; }
+
+    .tl-row {
+        display: flex; align-items: center; gap: 7px; row-gap: 4px; flex-wrap: wrap;
+        padding: 6px 8px; margin-top: 4px; border-radius: 6px;
+        border-left: 5px solid var(--accent, #444);
+        background: rgba(255,255,255,0.04);
+    }
+    .tl-row.ready { background: rgba(255, 204, 0, 0.07); }
+    .tl-num {
+        width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+        background: #333; color: #ffcc00; font-size: 12px; font-weight: bold;
+        display: flex; align-items: center; justify-content: center;
+    }
+    .tl-name { width: 108px; flex-shrink: 0; font-size: 12px; font-weight: bold; color: var(--accent, #ccc); line-height: 1.15; }
+    .tl-ans {
+        flex: 1; min-width: 110px; text-align: center;
+        font-size: 19px; font-weight: 900; color: #ffcc00;
+        text-shadow: 0 0 8px rgba(0,0,0,1); line-height: 1.15;
+    }
+    .tl-ans.empty { color: #3a3a3a; }
+    .tl-src { font-size: 10px; color: #888; font-weight: normal; }
+    .tl-sub { flex-basis: 100%; font-size: 10px; color: #777; line-height: 1.3; padding-left: 29px; }
+</style>
+</head>
+<body>
+
+<div class="header-area">
+    <div class="title">🤡 UMAD P4 — Real / Fake</div>
+    <button class="reset-btn" onclick="resetAll()">RESET</button>
+</div>
+
+<div class="section-title">【 Casts — press as they happen 】</div>
+
+<div class="cast">
+    <div class="cast-head" id="head-gc1">
+        <div class="cast-title">Grand Cross 1 <span class="cast-time">0:23</span></div>
+        <div class="rf-group">
+            <button class="rf-btn" id="b-gc1rf-real" onclick="setS('gc1rf','real')">🔵</button>
+            <button class="rf-btn" id="b-gc1rf-fake" onclick="setS('gc1rf','fake')">❓</button>
+        </div>
+    </div>
+    <div class="sub">
+        <div class="sub-label">MY DEBUFFS</div>
+        <div class="pick-group">
+            <button class="pick-btn" id="b-my1main-water" onclick="setS('my1main','water')"><img src="icons/215696.png"></button>
+            <button class="pick-btn" id="b-my1main-light" onclick="setS('my1main','light')"><img src="icons/215623.png"></button>
+            <button class="pick-btn" id="b-my1main-bomb" onclick="setS('my1main','bomb')"><img src="icons/215727.png"></button>
+            <button class="pick-btn" id="b-my1gaze" onclick="toggleMy('my1gaze')"><img src="icons/215588.png"></button>
+        </div>
+        <div class="pick-group">
+            <button class="pick-btn word" id="b-my1timer-short" onclick="setS('my1timer','short')">SHORT</button>
+            <button class="pick-btn word" id="b-my1timer-long" onclick="setS('my1timer','long')">LONG</button>
+        </div>
+    </div>
+    <div class="note">🔵/❓ covers everything this cast gives (its gazes = the SHORT shrieks). Pick your debuff (one of 💧⚡💣, 2 water / 2 lightning / 4 bombs per cast), toggle 👁 if you also got a gaze, set your timer.</div>
+</div>
+
+<div class="cast">
+    <div class="cast-head" id="head-c1">
+        <div class="cast-title">Chaos Cast 1 <span class="cast-time">0:28</span></div>
+        <div class="pick-group">
+            <button class="pick-btn" id="b-c1elem-fire" onclick="setS('c1elem','fire')"><img src="icons/215902.png"></button>
+            <button class="pick-btn" id="b-c1elem-fluid" onclick="setS('c1elem','fluid')"><img src="icons/215903.png"></button>
+        </div>
+        <div class="rf-group">
+            <button class="rf-btn" id="b-c1rf-real" onclick="setS('c1rf','real')">🔵</button>
+            <button class="rf-btn" id="b-c1rf-fake" onclick="setS('c1rf','fake')">❓</button>
+        </div>
+    </div>
+</div>
+
+<div class="cast">
+    <div class="cast-head" id="head-gc2">
+        <div class="cast-title">Grand Cross 2 <span class="cast-time">0:38</span></div>
+        <div class="rf-group">
+            <button class="rf-btn" id="b-gc2rf-real" onclick="setS('gc2rf','real')">🔵</button>
+            <button class="rf-btn" id="b-gc2rf-fake" onclick="setS('gc2rf','fake')">❓</button>
+        </div>
+    </div>
+    <div class="sub">
+        <div class="sub-label">MY DEBUFFS</div>
+        <div class="pick-group" id="my2main"></div>
+        <button class="pick-btn" id="b-my2gaze" onclick="toggleMy('my2gaze')"><img src="icons/215588.png"></button>
+        <div class="auto-label" id="lbl-my2timer"></div>
+    </div>
+    <div class="note">You get exactly one 💣 and one 💧/⚡ across both casts, opposite timers. Had 💧/⚡ first → 💣 now (auto). Had 💣 first → pick which of 💧/⚡ you got. 👁 is independent; this cast's gazes = the LONG shrieks.</div>
+</div>
+
+<div class="cast">
+    <div class="cast-head" id="head-c2">
+        <div class="cast-title">Chaos Cast 2 <span class="cast-time">0:43</span></div>
+        <div class="auto-label" id="lbl-c2elem"></div>
+        <div class="rf-group">
+            <button class="rf-btn" id="b-c2rf-real" onclick="setS('c2rf','real')">🔵</button>
+            <button class="rf-btn" id="b-c2rf-fake" onclick="setS('c2rf','fake')">❓</button>
+        </div>
+    </div>
+</div>
+
+<div class="cast">
+    <div class="cast-head" id="head-line">
+        <div class="cast-title">⚡ Thunder III — line <span class="cast-time">1:23</span></div>
+        <div class="rf-group">
+            <button class="rf-btn" id="b-linerf-real" onclick="setS('linerf','real')">🔵</button>
+            <button class="rf-btn" id="b-linerf-fake" onclick="setS('linerf','fake')">❓</button>
+        </div>
+        <div class="rel-wrap">
+            <div class="rel-label">Release</div>
+            <div class="rf-group" style="margin-left:0">
+                <button class="rf-btn" id="b-linerel-real" onclick="setS('linerel','real')">🔵</button>
+                <button class="rf-btn" id="b-linerel-fake" onclick="setS('linerel','fake')">❓</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="cast">
+    <div class="cast-head" id="head-cone">
+        <div class="cast-title">❄️ Blizzard III — cone <span class="cast-time">1:40</span></div>
+        <div class="rf-group">
+            <button class="rf-btn" id="b-conerf-real" onclick="setS('conerf','real')">🔵</button>
+            <button class="rf-btn" id="b-conerf-fake" onclick="setS('conerf','fake')">❓</button>
+        </div>
+        <div class="rel-wrap">
+            <div class="rel-label">Release</div>
+            <div class="rf-group" style="margin-left:0">
+                <button class="rf-btn" id="b-conerel-real" onclick="setS('conerel','real')">🔵</button>
+                <button class="rf-btn" id="b-conerel-fake" onclick="setS('conerel','fake')">❓</button>
+            </div>
+        </div>
+    </div>
+    <div class="note">Mana Release per element: 🔵 real = keeps the stored cast, ❓ fake = inverts it. Step ⑦ shows the final combined dodge.</div>
+</div>
+
+<div class="section-title">【 Resolution timeline — what YOU do 】</div>
+
+<div class="tl-row" id="tl-1" style="--accent:#4dc3ff">
+    <div class="tl-num">1</div><div class="tl-name">Exdeath SHORT</div>
+    <div class="tl-ans empty" id="tla-1">—</div>
+    <div class="tl-sub">supports N / DPS S — 3 stack + 1 spread per group · resolve 💣 if it pops</div>
+</div>
+<div class="tl-row" id="tl-2" style="--accent:#ff9d4d">
+    <div class="tl-num">2</div><div class="tl-name">👁 Short shrieks</div>
+    <div class="tl-ans empty" id="tla-2">—</div>
+    <div class="tl-sub">shrieks go off under the boss (+ Kefka dodges)</div>
+</div>
+<div class="tl-row" id="tl-3" style="--accent:#ff6b4d">
+    <div class="tl-num">3</div><div class="tl-name">🔥 Inferno</div>
+    <div class="tl-ans empty" id="tla-3">—</div>
+    <div class="tl-sub">puddles mid · raidwide hits first — if donut, WAIT, don't get baited</div>
+</div>
+<div class="tl-row" id="tl-4" style="--accent:#4dc3ff">
+    <div class="tl-num">4</div><div class="tl-name">Exdeath LONG</div>
+    <div class="tl-ans empty" id="tla-4">—</div>
+    <div class="tl-sub">supports N / DPS S — 3 stack + 1 spread per group · resolve 💣 if it pops</div>
+</div>
+<div class="tl-row" id="tl-5" style="--accent:#ff9d4d">
+    <div class="tl-num">5</div><div class="tl-name">👁 Long shrieks</div>
+    <div class="tl-ans empty" id="tla-5">—</div>
+    <div class="tl-sub">align N/S with the boss to see both shrieks</div>
+</div>
+<div class="tl-row" id="tl-6" style="--accent:#4dead5">
+    <div class="tl-num">6</div><div class="tl-name">🌊 Tsunami</div>
+    <div class="tl-ans empty" id="tla-6">—</div>
+    <div class="tl-sub">puddles mid · explodes ~5s after debuff expires</div>
+</div>
+<div class="tl-row" id="tl-7" style="--accent:#ffd94d">
+    <div class="tl-num">7</div><div class="tl-name">⚡❄️ Stored combo</div>
+    <div class="tl-ans empty" id="tla-7">—</div>
+    <div class="tl-sub">combined dodge of both stored casts · enrage @ 25% HP</div>
+</div>
+
+<script>
+// [when real, when fake]
+const ANSWERS = {
+    water: ["STACK", "SPREAD"],
+    light: ["SPREAD", "STACK"],
+    bomb:  ["💣 STOP", "💣 KEEP MOVING"],
+    gaze:  ["LOOK AWAY", "LOOK AT IT"],
+    fire:  ["OUT (circle)", "IN (donut)"],
+    fluid: ["IN (donut)", "OUT (circle)"],
+    line:  ["AVOID LINE", "STAND IN LINE"],
+    cone:  ["AVOID CONE", "STAND IN CONE"]
+};
+const FILL = "FILL A STACK", GOBOSS = "👁 GO UNDER BOSS";
+const ICON = { water: "215696", light: "215623", bomb: "215727" };
+
+const blank = () => ({
+    gc1rf: null, gc2rf: null,
+    my1main: null, my1gaze: null, my1timer: null,
+    my2pick: null, my2gaze: null,   // my2pick: water/light choice when cast 1 gave the bomb
+    c1elem: null, c1rf: null, c2rf: null,
+    linerf: null, linerel: null, conerf: null, conerel: null
+});
+let S = blank();
+
+const el = id => document.getElementById(id);
+const ans = (mech, rf) => ANSWERS[mech][rf === 'real' ? 0 : 1];
+const src = c => ' <span class="tl-src">' + c + '</span>';
+
+function setS(key, val) { S[key] = val; render(); }
+function toggleMy(k) { S[k] = S[k] ? null : true; render(); }
+function resetAll() { S = blank(); render(); }
+
+function paintRF(key) {
+    el('b-' + key + '-real').classList.toggle('sel-real', S[key] === 'real');
+    el('b-' + key + '-fake').classList.toggle('sel-fake', S[key] === 'fake');
+}
+function paintTL(n, html) {
+    const a = el('tla-' + n), row = el('tl-' + n);
+    if (html) { a.innerHTML = html; a.classList.remove('empty'); row.classList.add('ready'); }
+    else { a.textContent = '—'; a.classList.add('empty'); row.classList.remove('ready'); }
+}
+
+// exactly one bomb + one water/light per player across both casts:
+// water/light first -> bomb second (derived); bomb first -> user picks water/light
+function my2main() {
+    if (S.my1main === 'water' || S.my1main === 'light') return 'bomb';
+    if (S.my1main === 'bomb') return S.my2pick;
+    return null;
+}
+
+function render() {
+    ['gc1rf','gc2rf','c1rf','c2rf','linerf','linerel','conerf','conerel'].forEach(paintRF);
+    ['water','light','bomb'].forEach(v => el('b-my1main-' + v).classList.toggle('sel', S.my1main === v));
+    ['my1gaze','my2gaze'].forEach(k => el('b-' + k).classList.toggle('sel', !!S[k]));
+    ['short','long'].forEach(v => el('b-my1timer-' + v).classList.toggle('sel', S.my1timer === v));
+    ['fire','fluid'].forEach(v => el('b-c1elem-' + v).classList.toggle('sel', S.c1elem === v));
+
+    [['gc1','gc1rf'],['gc2','gc2rf'],['c1','c1rf'],['c2','c2rf']].forEach(([h, k]) => {
+        el('head-' + h).classList.toggle('judged-real', S[k] === 'real');
+        el('head-' + h).classList.toggle('judged-fake', S[k] === 'fake');
+    });
+
+    // GC2 main debuff: auto bomb, or a water/light pick when cast 1 gave the bomb
+    const icon = v => '<img src="icons/' + ICON[v] + '.png">';
+    if (S.my1main === 'water' || S.my1main === 'light') {
+        el('my2main').innerHTML = '<span class="pick-btn auto sel">' + icon('bomb') + '</span>'
+            + '<span class="auto-label" style="align-self:center">(auto)</span>';
+    } else if (S.my1main === 'bomb') {
+        el('my2main').innerHTML =
+            '<span class="pick-btn' + (S.my2pick === 'water' ? ' sel' : '') + '" onclick="setS(\'my2pick\',\'water\')">' + icon('water') + '</span>' +
+            '<span class="pick-btn' + (S.my2pick === 'light' ? ' sel' : '') + '" onclick="setS(\'my2pick\',\'light\')">' + icon('light') + '</span>';
+    } else {
+        el('my2main').innerHTML = '<span class="auto-label" style="color:#666">—</span>';
+    }
+    el('lbl-my2timer').textContent = S.my1timer
+        ? (S.my1timer === 'short' ? 'LONG' : 'SHORT') + ' (auto)' : '';
+    el('lbl-c2elem').textContent = S.c1elem
+        ? (S.c1elem === 'fire' ? '🌊' : '🔥') + ' (auto)' : '';
+
+    // ===== resolution timeline =====
+    // Each debuff resolves once, in its cast's window (cast 2 = opposite timer).
+    // Bomb holders still take a position, so bomb shows FILL A STACK + bomb action.
+    const cast1 = { main: S.my1main, rf: S.gc1rf, src: 'GC1' };
+    const cast2 = { main: my2main(), rf: S.gc2rf, src: 'GC2' };
+    let winShort = null, winLong = null;
+    if (S.my1timer) [winShort, winLong] = S.my1timer === 'short' ? [cast1, cast2] : [cast2, cast1];
+
+    const winAns = c => {
+        if (!c || !c.main) return null;
+        if (c.main !== 'bomb') return c.rf ? ans(c.main, c.rf) + src(c.src) : null;
+        const parts = [FILL];
+        if (c.rf) parts.push(ans('bomb', c.rf) + src(c.src));
+        return parts.join(' + ');
+    };
+    paintTL(1, winAns(winShort));
+    paintTL(4, winAns(winLong));
+
+    // shrieks: GC1's always resolve first; add GO UNDER BOSS if the gaze is mine
+    const gazeAns = (rf, mine, tag) => {
+        const parts = [];
+        if (mine) parts.push(GOBOSS);
+        if (rf) parts.push(ans('gaze', rf) + src(tag));
+        return parts.length ? parts.join(' + ') : null;
+    };
+    paintTL(2, gazeAns(S.gc1rf, S.my1gaze, 'GC1'));
+    paintTL(5, gazeAns(S.gc2rf, S.my2gaze, 'GC2'));
+
+    // chaos: fire always resolves first; rf from whichever cast had that element
+    const chaosAns = elem => {
+        if (!S.c1elem) return null;
+        const rf = S.c1elem === elem ? S.c1rf : S.c2rf;
+        return rf ? ans(elem, rf) : null;
+    };
+    paintTL(3, chaosAns('fire'));
+    paintTL(6, chaosAns('fluid'));
+
+    // stored: cast XOR fake-release
+    const stored = m => {
+        if (!S[m + 'rf']) return null;
+        let eff = S[m + 'rf'];
+        if (S[m + 'rel'] === 'fake') eff = eff === 'real' ? 'fake' : 'real';
+        return ans(m, eff);
+    };
+    const ln = stored('line'), cn = stored('cone');
+    paintTL(7, (ln || cn) ? [ln, cn].filter(Boolean).join(' + ') : null);
+}
+
+render();
+</script>
+</body>
+</html>
