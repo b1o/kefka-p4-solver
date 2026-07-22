@@ -1,10 +1,3 @@
-<!--
-  UMAD P4 real/fake cheat sheet — personal tool.
-  Press inputs in boss cast order; the resolution timeline is computed.
-  Keyboard: R/F judge the highlighted cast and advance. Other keys are printed on the buttons.
-  Refs: https://raidplan.io/plan/j33r35wvfp5xg7dd , https://raidplan.io/plan/guufe9q559evt7pj
-  Original tool: https://aweiyourdog.github.io/ff14-kfk-p4/ff14kfkp4
--->
 <!doctype html>
 <html lang="en">
 	<head>
@@ -38,12 +31,76 @@
 			body {
 				padding: 0 8px 8px;
 			}
+			html {
+				scrollbar-width: none;
+				-ms-overflow-style: none;
+			}
+			::-webkit-scrollbar {
+				width: 0;
+				height: 0;
+			}
 			button {
 				font-family: inherit;
 				touch-action: manipulation;
 			}
 
-			/* ---------- chrome ---------- */
+			.overlay-ctl {
+				display: none;
+				align-items: center;
+				justify-content: flex-end;
+				gap: 6px;
+				padding: 5px 8px 4px;
+				margin: 0 -8px 2px;
+			}
+			#app.popped .overlay-ctl {
+				display: flex;
+			}
+			#app.popped .bar {
+				display: none;
+			}
+			.ovl-dock {
+				border: 1px solid var(--line);
+				background: var(--panel);
+				color: var(--mut);
+				border-radius: 6px;
+				font-size: 10px;
+				font-weight: 700;
+				height: 26px;
+				padding: 0 9px;
+				cursor: pointer;
+			}
+			.ovl-dock:hover {
+				color: var(--txt);
+				border-color: #3d3d4a;
+			}
+
+			#docked {
+				padding: 46px 16px;
+				display: grid;
+				gap: 14px;
+				place-items: center;
+				text-align: center;
+				color: var(--mut);
+				font-size: 13px;
+			}
+			#docked[hidden] {
+				display: none;
+			}
+			#docked button {
+				border: 1px solid var(--line);
+				background: var(--panel);
+				color: var(--txt);
+				border-radius: 8px;
+				font-size: 13px;
+				font-weight: 700;
+				height: 38px;
+				padding: 0 16px;
+				cursor: pointer;
+			}
+			#docked button:hover {
+				border-color: #3d3d4a;
+			}
+
 			.bar {
 				display: flex;
 				align-items: center;
@@ -81,6 +138,10 @@
 				color: var(--txt);
 				border-color: #3d3d4a;
 			}
+			#btn-pop {
+				font-size: 15px;
+				padding: 0 9px;
+			}
 			#btn-reset {
 				color: #ff8f8f;
 				border-color: #4a2a2a;
@@ -91,7 +152,6 @@
 				background: #7d2626;
 				border-color: #a33;
 			}
-			/* role is config, not pull state — RESET leaves it alone and it persists across reloads */
 			.role {
 				display: flex;
 				gap: 3px;
@@ -115,7 +175,7 @@
 				background: var(--amber);
 				border-color: var(--amber);
 			}
-			body.help #btn-help {
+			#app.help #btn-help {
 				color: var(--amber);
 				border-color: #5a4715;
 				background: #241f0e;
@@ -160,7 +220,6 @@
 				background: var(--line);
 			}
 
-			/* ---------- input cards ---------- */
 			.card {
 				border: 1px solid var(--line);
 				border-radius: 10px;
@@ -214,7 +273,6 @@
 				color: var(--mut);
 			}
 
-			/* ---------- real / fake ---------- */
 			.rf {
 				display: flex;
 				gap: 5px;
@@ -225,22 +283,7 @@
 				margin-left: auto;
 			}
 			.rf.focus {
-				box-shadow:
-					0 0 0 2px var(--amber),
-					0 0 12px rgba(255, 197, 49, 0.35);
-				animation: pulse 1.6s ease-in-out infinite;
-			}
-			@keyframes pulse {
-				50% {
-					box-shadow:
-						0 0 0 2px rgba(255, 197, 49, 0.45),
-						0 0 4px rgba(255, 197, 49, 0.15);
-				}
-			}
-			@media (prefers-reduced-motion: reduce) {
-				.rf.focus {
-					animation: none;
-				}
+				box-shadow: 0 0 0 2px var(--amber);
 			}
 
 			.rf-btn {
@@ -281,7 +324,6 @@
 				opacity: 0.5;
 			}
 
-			/* ---------- pickers ---------- */
 			.picks {
 				display: flex;
 				gap: 4px;
@@ -326,8 +368,6 @@
 			.pick.auto {
 				pointer-events: none;
 			}
-			/* the lightning and bomb icons read almost the same at a glance, so those two carry the
-       word on the button's top border — water's droplet needs no help */
 			.pick.lbl {
 				min-width: 54px;
 			}
@@ -378,7 +418,6 @@
 				}
 			}
 
-			/* ---------- stored matrix ---------- */
 			.mtx {
 				display: grid;
 				grid-template-columns: 1fr auto auto;
@@ -412,7 +451,6 @@
 				font-size: 16px;
 			}
 
-			/* ---------- notes ---------- */
 			.note {
 				display: none;
 				font-size: 10.5px;
@@ -421,11 +459,10 @@
 				padding: 6px 8px;
 				border-top: 1px solid #202027;
 			}
-			body.help .note {
+			#app.help .note {
 				display: block;
 			}
 
-			/* ---------- timeline ---------- */
 			.tl {
 				display: flex;
 				align-items: center;
@@ -496,242 +533,257 @@
 				line-height: 1.35;
 				padding-left: 29px;
 			}
-			body.help .hint {
+			#app.help .hint {
 				display: block;
 			}
 		</style>
 	</head>
 	<body>
-		<div class="bar">
-			<div class="brand">🤡 UMAD P4 — Real / Fake</div>
-			<button id="btn-help" onclick="document.body.classList.toggle('help')">?</button>
-			<button id="btn-reset" onclick="resetAll()">RESET</button>
+		<div id="app">
+			<div class="overlay-ctl">
+				<button class="ovl-dock" data-act="reset">RESET</button>
+				<button class="ovl-dock" data-act="dock">DOCK ▢</button>
+			</div>
+			<div id="appbody">
+				<div class="bar">
+					<div class="brand">🤡 UMAD P4 — Real / Fake</div>
+					<button id="btn-pop" data-act="pop" title="Pop out as an always-on-top overlay">⧉</button>
+					<button id="btn-help" data-act="help">?</button>
+					<button id="btn-reset" data-act="reset">RESET</button>
+				</div>
+
+				<div class="wrap">
+					<div class="col">
+						<div class="sec">Casts — press as they happen</div>
+						<div class="role">
+							<button id="b-role-sup" data-act="role" data-v="sup">SUP</button>
+							<button id="b-role-dps" data-act="role" data-v="dps">DPS</button>
+						</div>
+
+						<div class="card" id="card-gc1">
+							<div class="head" id="head-gc1">
+								<div class="cast">Grand Cross 1 <span class="t">0:23</span></div>
+								<div class="rf" id="rf-gc1rf">
+									<button class="rf-btn real" id="b-gc1rf-real" data-act="s" data-k="gc1rf" data-v="real">
+										<span>🔵</span><kbd>R</kbd>
+									</button>
+									<button class="rf-btn fake" id="b-gc1rf-fake" data-act="s" data-k="gc1rf" data-v="fake">
+										<span>❓</span><kbd>F</kbd>
+									</button>
+								</div>
+							</div>
+							<div class="row">
+								<span class="lab">MINE</span>
+								<div class="picks">
+									<button class="pick" id="b-my1main-water" data-act="s" data-k="my1main" data-v="water">
+										<img src="icons/215696.png" /><kbd>1</kbd>
+									</button>
+									<button class="pick lbl" id="b-my1main-light" data-act="s" data-k="my1main" data-v="light">
+										<img src="icons/215623.png" /><span class="pn" style="color: #c07dff">LIGHTNING</span><kbd>2</kbd>
+									</button>
+									<button class="pick lbl" id="b-my1main-bomb" data-act="s" data-k="my1main" data-v="bomb">
+										<img src="icons/215727.png" /><span class="pn" style="color: #ff9d4d">BOMB</span><kbd>3</kbd>
+									</button>
+								</div>
+								<div class="picks">
+									<button class="pick" id="b-my1gaze" data-act="toggle" data-k="my1gaze">
+										<img src="icons/215588.png" /><kbd>8</kbd>
+									</button>
+								</div>
+								<div class="picks">
+									<button class="pick word" id="b-my1timer-short" data-act="s" data-k="my1timer" data-v="short">
+										SHORT<kbd>S</kbd>
+									</button>
+									<button class="pick word" id="b-my1timer-long" data-act="s" data-k="my1timer" data-v="long">
+										LONG<kbd>L</kbd>
+									</button>
+								</div>
+							</div>
+							<div class="note">
+								🔵/❓ covers everything this cast gives (its gazes = the SHORT shrieks). Pick your debuff (one of 💧⚡💣 — 2
+								water / 2 lightning / 4 bombs per cast), toggle 👁 if you also got a gaze, set your timer.
+							</div>
+						</div>
+
+						<div class="card" id="card-c1">
+							<div class="head" id="head-c1">
+								<div class="cast">Chaos 1 <span class="t">0:28</span></div>
+								<div class="picks">
+									<button class="pick" id="b-c1elem-fire" data-act="s" data-k="c1elem" data-v="fire">
+										<img src="icons/215902.png" /><kbd>4</kbd>
+									</button>
+									<button class="pick" id="b-c1elem-fluid" data-act="s" data-k="c1elem" data-v="fluid">
+										<img src="icons/215903.png" /><kbd>5</kbd>
+									</button>
+								</div>
+								<div class="rf" id="rf-c1rf">
+									<button class="rf-btn real" id="b-c1rf-real" data-act="s" data-k="c1rf" data-v="real">
+										<span>🔵</span><kbd>R</kbd>
+									</button>
+									<button class="rf-btn fake" id="b-c1rf-fake" data-act="s" data-k="c1rf" data-v="fake">
+										<span>❓</span><kbd>F</kbd>
+									</button>
+								</div>
+							</div>
+							<div class="note">
+								Pick the element the raid got (🔥 Inferno / 🌊 Tsunami), then judge the cast. Chaos 2 is always the other
+								one.
+							</div>
+						</div>
+
+						<div class="card" id="card-gc2">
+							<div class="head" id="head-gc2">
+								<div class="cast">Grand Cross 2 <span class="t">0:38</span></div>
+								<div class="rf" id="rf-gc2rf">
+									<button class="rf-btn real" id="b-gc2rf-real" data-act="s" data-k="gc2rf" data-v="real">
+										<span>🔵</span><kbd>R</kbd>
+									</button>
+									<button class="rf-btn fake" id="b-gc2rf-fake" data-act="s" data-k="gc2rf" data-v="fake">
+										<span>❓</span><kbd>F</kbd>
+									</button>
+								</div>
+							</div>
+							<div class="row">
+								<span class="lab">MINE</span>
+								<div class="picks" id="my2main"></div>
+								<div class="picks">
+									<button class="pick" id="b-my2gaze" data-act="toggle" data-k="my2gaze">
+										<img src="icons/215588.png" /><kbd>9</kbd>
+									</button>
+								</div>
+								<span class="tag off" id="lbl-my2timer" style="margin-left: auto">TIMER —</span>
+							</div>
+							<div class="note">
+								You get exactly one 💣 and one 💧/⚡ across both casts, opposite timers. Had 💧/⚡ first → 💣 now (auto).
+								Had 💣 first → pick which of 💧/⚡ you got. 👁 is independent; this cast's gazes = the LONG shrieks.
+							</div>
+						</div>
+
+						<div class="card" id="card-c2">
+							<div class="head" id="head-c2">
+								<div class="cast">Chaos 2 <span class="t">0:43</span></div>
+								<span class="tag off" id="lbl-c2elem">ELEM —</span>
+								<div class="rf" id="rf-c2rf">
+									<button class="rf-btn real" id="b-c2rf-real" data-act="s" data-k="c2rf" data-v="real">
+										<span>🔵</span><kbd>R</kbd>
+									</button>
+									<button class="rf-btn fake" id="b-c2rf-fake" data-act="s" data-k="c2rf" data-v="fake">
+										<span>❓</span><kbd>F</kbd>
+									</button>
+								</div>
+							</div>
+						</div>
+
+						<div class="card" id="card-stored">
+							<div class="mtx">
+								<div class="mtx-h"></div>
+								<div class="mtx-h">CAST</div>
+								<div class="mtx-h">RELEASE</div>
+
+								<div class="mtx-l">⚡ Line <span class="t">1:23</span></div>
+								<div class="rf" id="rf-linerf">
+									<button class="rf-btn real" id="b-linerf-real" data-act="s" data-k="linerf" data-v="real">
+										<span>🔵</span><kbd>R</kbd>
+									</button>
+									<button class="rf-btn fake" id="b-linerf-fake" data-act="s" data-k="linerf" data-v="fake">
+										<span>❓</span><kbd>F</kbd>
+									</button>
+								</div>
+								<div class="rf" id="rf-linerel">
+									<button class="rf-btn real" id="b-linerel-real" data-act="s" data-k="linerel" data-v="real">
+										<span>🔵</span><kbd>R</kbd>
+									</button>
+									<button class="rf-btn fake" id="b-linerel-fake" data-act="s" data-k="linerel" data-v="fake">
+										<span>❓</span><kbd>F</kbd>
+									</button>
+								</div>
+
+								<div class="mtx-l">❄️ Cone <span class="t">1:40</span></div>
+								<div class="rf" id="rf-conerf">
+									<button class="rf-btn real" id="b-conerf-real" data-act="s" data-k="conerf" data-v="real">
+										<span>🔵</span><kbd>R</kbd>
+									</button>
+									<button class="rf-btn fake" id="b-conerf-fake" data-act="s" data-k="conerf" data-v="fake">
+										<span>❓</span><kbd>F</kbd>
+									</button>
+								</div>
+								<div class="rf" id="rf-conerel">
+									<button class="rf-btn real" id="b-conerel-real" data-act="s" data-k="conerel" data-v="real">
+										<span>🔵</span><kbd>R</kbd>
+									</button>
+									<button class="rf-btn fake" id="b-conerel-fake" data-act="s" data-k="conerel" data-v="fake">
+										<span>❓</span><kbd>F</kbd>
+									</button>
+								</div>
+							</div>
+							<div class="note">
+								Thunder III (1:23) and Blizzard III (1:40) are stored, then Mana Release ×2 (~1:45) — 🔵 real release keeps
+								the stored cast, ❓ fake inverts it. Step ⑦ shows the combined dodge.
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="sec">Resolution — what YOU do</div>
+
+						<div class="tl" id="tl-1" style="--accent: #4dc3ff">
+							<div class="num">1</div>
+							<div class="name">Exdeath SHORT</div>
+							<div class="ans none" id="tla-1">—</div>
+							<div class="hint">
+								supports stack N / spread W · DPS stack S / spread E — 3 stack + 1 spread per group · resolve 💣 if it
+								pops
+							</div>
+						</div>
+						<div class="tl" id="tl-2" style="--accent: #ff9d4d">
+							<div class="num">2</div>
+							<div class="name">👁 Short shrieks</div>
+							<div class="ans none" id="tla-2">—</div>
+							<div class="hint">shrieks go off under the boss (+ Kefka dodges)</div>
+						</div>
+						<div class="tl" id="tl-3" style="--accent: #ff6b4d">
+							<div class="num">3</div>
+							<div class="name">🔥 Inferno</div>
+							<div class="ans none" id="tla-3">—</div>
+							<div class="hint">puddles mid · raidwide hits first — if donut, WAIT, don't get baited</div>
+						</div>
+						<div class="tl" id="tl-4" style="--accent: #4dc3ff">
+							<div class="num">4</div>
+							<div class="name">Exdeath LONG</div>
+							<div class="ans none" id="tla-4">—</div>
+							<div class="hint">
+								supports stack N / spread W · DPS stack S / spread E — 3 stack + 1 spread per group · resolve 💣 if it
+								pops
+							</div>
+						</div>
+						<div class="tl" id="tl-5" style="--accent: #ff9d4d">
+							<div class="num">5</div>
+							<div class="name">👁 Long shrieks</div>
+							<div class="ans none" id="tla-5">—</div>
+							<div class="hint">align N/S with the boss to see both shrieks</div>
+						</div>
+						<div class="tl" id="tl-6" style="--accent: #4dead5">
+							<div class="num">6</div>
+							<div class="name">🌊 Tsunami</div>
+							<div class="ans none" id="tla-6">—</div>
+							<div class="hint">puddles mid · explodes ~5s after debuff expires</div>
+						</div>
+						<div class="tl" id="tl-7" style="--accent: #ffd94d">
+							<div class="num">7</div>
+							<div class="name">⚡❄️ Stored combo</div>
+							<div class="ans none" id="tla-7">—</div>
+							<div class="hint">combined dodge of both stored casts · enrage @ 25% HP</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 
-		<div class="wrap">
-			<div class="col">
-				<div class="sec">Casts — press as they happen</div>
-				<div class="role">
-					<button id="b-role-sup" onclick="setRole('sup')">SUP</button>
-					<button id="b-role-dps" onclick="setRole('dps')">DPS</button>
-				</div>
-
-				<div class="card" id="card-gc1">
-					<div class="head" id="head-gc1">
-						<div class="cast">Grand Cross 1 <span class="t">0:23</span></div>
-						<div class="rf" id="rf-gc1rf">
-							<button class="rf-btn real" id="b-gc1rf-real" onclick="setS('gc1rf', 'real')">
-								<span>🔵</span><kbd>R</kbd>
-							</button>
-							<button class="rf-btn fake" id="b-gc1rf-fake" onclick="setS('gc1rf', 'fake')">
-								<span>❓</span><kbd>F</kbd>
-							</button>
-						</div>
-					</div>
-					<div class="row">
-						<span class="lab">MINE</span>
-						<div class="picks">
-							<button class="pick" id="b-my1main-water" onclick="setS('my1main', 'water')">
-								<img src="icons/215696.png" /><kbd>1</kbd>
-							</button>
-							<button class="pick lbl" id="b-my1main-light" onclick="setS('my1main', 'light')">
-								<img src="icons/215623.png" /><span class="pn" style="color: #c07dff">LIGHTNING</span><kbd>2</kbd>
-							</button>
-							<button class="pick lbl" id="b-my1main-bomb" onclick="setS('my1main', 'bomb')">
-								<img src="icons/215727.png" /><span class="pn" style="color: #ff9d4d">BOMB</span><kbd>3</kbd>
-							</button>
-						</div>
-						<div class="picks">
-							<button class="pick" id="b-my1gaze" onclick="toggleMy('my1gaze')">
-								<img src="icons/215588.png" /><kbd>8</kbd>
-							</button>
-						</div>
-						<div class="picks">
-							<button class="pick word" id="b-my1timer-short" onclick="setS('my1timer', 'short')">
-								SHORT<kbd>S</kbd>
-							</button>
-							<button class="pick word" id="b-my1timer-long" onclick="setS('my1timer', 'long')">
-								LONG<kbd>L</kbd>
-							</button>
-						</div>
-					</div>
-					<div class="note">
-						🔵/❓ covers everything this cast gives (its gazes = the SHORT shrieks). Pick your debuff (one of 💧⚡💣 — 2
-						water / 2 lightning / 4 bombs per cast), toggle 👁 if you also got a gaze, set your timer.
-					</div>
-				</div>
-
-				<div class="card" id="card-c1">
-					<div class="head" id="head-c1">
-						<div class="cast">Chaos 1 <span class="t">0:28</span></div>
-						<div class="picks">
-							<button class="pick" id="b-c1elem-fire" onclick="setS('c1elem', 'fire')">
-								<img src="icons/215902.png" /><kbd>4</kbd>
-							</button>
-							<button class="pick" id="b-c1elem-fluid" onclick="setS('c1elem', 'fluid')">
-								<img src="icons/215903.png" /><kbd>5</kbd>
-							</button>
-						</div>
-						<div class="rf" id="rf-c1rf">
-							<button class="rf-btn real" id="b-c1rf-real" onclick="setS('c1rf', 'real')">
-								<span>🔵</span><kbd>R</kbd>
-							</button>
-							<button class="rf-btn fake" id="b-c1rf-fake" onclick="setS('c1rf', 'fake')">
-								<span>❓</span><kbd>F</kbd>
-							</button>
-						</div>
-					</div>
-					<div class="note">
-						Pick the element the raid got (🔥 Inferno / 🌊 Tsunami), then judge the cast. Chaos 2 is always the other
-						one.
-					</div>
-				</div>
-
-				<div class="card" id="card-gc2">
-					<div class="head" id="head-gc2">
-						<div class="cast">Grand Cross 2 <span class="t">0:38</span></div>
-						<div class="rf" id="rf-gc2rf">
-							<button class="rf-btn real" id="b-gc2rf-real" onclick="setS('gc2rf', 'real')">
-								<span>🔵</span><kbd>R</kbd>
-							</button>
-							<button class="rf-btn fake" id="b-gc2rf-fake" onclick="setS('gc2rf', 'fake')">
-								<span>❓</span><kbd>F</kbd>
-							</button>
-						</div>
-					</div>
-					<div class="row">
-						<span class="lab">MINE</span>
-						<div class="picks" id="my2main"></div>
-						<div class="picks">
-							<button class="pick" id="b-my2gaze" onclick="toggleMy('my2gaze')">
-								<img src="icons/215588.png" /><kbd>9</kbd>
-							</button>
-						</div>
-						<span class="tag off" id="lbl-my2timer" style="margin-left: auto">TIMER —</span>
-					</div>
-					<div class="note">
-						You get exactly one 💣 and one 💧/⚡ across both casts, opposite timers. Had 💧/⚡ first → 💣 now (auto).
-						Had 💣 first → pick which of 💧/⚡ you got. 👁 is independent; this cast's gazes = the LONG shrieks.
-					</div>
-				</div>
-
-				<div class="card" id="card-c2">
-					<div class="head" id="head-c2">
-						<div class="cast">Chaos 2 <span class="t">0:43</span></div>
-						<span class="tag off" id="lbl-c2elem">ELEM —</span>
-						<div class="rf" id="rf-c2rf">
-							<button class="rf-btn real" id="b-c2rf-real" onclick="setS('c2rf', 'real')">
-								<span>🔵</span><kbd>R</kbd>
-							</button>
-							<button class="rf-btn fake" id="b-c2rf-fake" onclick="setS('c2rf', 'fake')">
-								<span>❓</span><kbd>F</kbd>
-							</button>
-						</div>
-					</div>
-				</div>
-
-				<div class="card" id="card-stored">
-					<div class="mtx">
-						<div class="mtx-h"></div>
-						<div class="mtx-h">CAST</div>
-						<div class="mtx-h">RELEASE</div>
-
-						<div class="mtx-l">⚡ Line <span class="t">1:23</span></div>
-						<div class="rf" id="rf-linerf">
-							<button class="rf-btn real" id="b-linerf-real" onclick="setS('linerf', 'real')">
-								<span>🔵</span><kbd>R</kbd>
-							</button>
-							<button class="rf-btn fake" id="b-linerf-fake" onclick="setS('linerf', 'fake')">
-								<span>❓</span><kbd>F</kbd>
-							</button>
-						</div>
-						<div class="rf" id="rf-linerel">
-							<button class="rf-btn real" id="b-linerel-real" onclick="setS('linerel', 'real')">
-								<span>🔵</span><kbd>R</kbd>
-							</button>
-							<button class="rf-btn fake" id="b-linerel-fake" onclick="setS('linerel', 'fake')">
-								<span>❓</span><kbd>F</kbd>
-							</button>
-						</div>
-
-						<div class="mtx-l">❄️ Cone <span class="t">1:40</span></div>
-						<div class="rf" id="rf-conerf">
-							<button class="rf-btn real" id="b-conerf-real" onclick="setS('conerf', 'real')">
-								<span>🔵</span><kbd>R</kbd>
-							</button>
-							<button class="rf-btn fake" id="b-conerf-fake" onclick="setS('conerf', 'fake')">
-								<span>❓</span><kbd>F</kbd>
-							</button>
-						</div>
-						<div class="rf" id="rf-conerel">
-							<button class="rf-btn real" id="b-conerel-real" onclick="setS('conerel', 'real')">
-								<span>🔵</span><kbd>R</kbd>
-							</button>
-							<button class="rf-btn fake" id="b-conerel-fake" onclick="setS('conerel', 'fake')">
-								<span>❓</span><kbd>F</kbd>
-							</button>
-						</div>
-					</div>
-					<div class="note">
-						Thunder III (1:23) and Blizzard III (1:40) are stored, then Mana Release ×2 (~1:45) — 🔵 real release keeps
-						the stored cast, ❓ fake inverts it. Step ⑦ shows the combined dodge.
-					</div>
-				</div>
-			</div>
-			<div class="col">
-				<div class="sec">Resolution — what YOU do</div>
-
-				<div class="tl" id="tl-1" style="--accent: #4dc3ff">
-					<div class="num">1</div>
-					<div class="name">Exdeath SHORT</div>
-					<div class="ans none" id="tla-1">—</div>
-					<div class="hint">
-						supports stack N / spread W · DPS stack S / spread E — 3 stack + 1 spread per group · resolve 💣 if it pops
-					</div>
-				</div>
-				<div class="tl" id="tl-2" style="--accent: #ff9d4d">
-					<div class="num">2</div>
-					<div class="name">👁 Short shrieks</div>
-					<div class="ans none" id="tla-2">—</div>
-					<div class="hint">shrieks go off under the boss (+ Kefka dodges)</div>
-				</div>
-				<div class="tl" id="tl-3" style="--accent: #ff6b4d">
-					<div class="num">3</div>
-					<div class="name">🔥 Inferno</div>
-					<div class="ans none" id="tla-3">—</div>
-					<div class="hint">puddles mid · raidwide hits first — if donut, WAIT, don't get baited</div>
-				</div>
-				<div class="tl" id="tl-4" style="--accent: #4dc3ff">
-					<div class="num">4</div>
-					<div class="name">Exdeath LONG</div>
-					<div class="ans none" id="tla-4">—</div>
-					<div class="hint">
-						supports stack N / spread W · DPS stack S / spread E — 3 stack + 1 spread per group · resolve 💣 if it pops
-					</div>
-				</div>
-				<div class="tl" id="tl-5" style="--accent: #ff9d4d">
-					<div class="num">5</div>
-					<div class="name">👁 Long shrieks</div>
-					<div class="ans none" id="tla-5">—</div>
-					<div class="hint">align N/S with the boss to see both shrieks</div>
-				</div>
-				<div class="tl" id="tl-6" style="--accent: #4dead5">
-					<div class="num">6</div>
-					<div class="name">🌊 Tsunami</div>
-					<div class="ans none" id="tla-6">—</div>
-					<div class="hint">puddles mid · explodes ~5s after debuff expires</div>
-				</div>
-				<div class="tl" id="tl-7" style="--accent: #ffd94d">
-					<div class="num">7</div>
-					<div class="name">⚡❄️ Stored combo</div>
-					<div class="ans none" id="tla-7">—</div>
-					<div class="hint">combined dodge of both stored casts · enrage @ 25% HP</div>
-				</div>
-			</div>
+		<div id="docked" hidden>
+			<div>Panel is floating in a pop-out window.</div>
+			<button data-act="pop">Bring it back</button>
 		</div>
 
 		<script>
-			// [when real, when fake]
 			const ANSWERS = {
 				water: ["STACK", "SPREAD"],
 				light: ["SPREAD", "STACK"],
@@ -744,16 +796,13 @@
 			};
 			const FILL = "FILL A STACK",
 				GOBOSS = "👁 GO UNDER BOSS";
-			// role only decorates the stack/spread wording with a direction — no mechanic depends on it
 			const DIR = { sup: { stack: "North", spread: "West" }, dps: { stack: "South", spread: "East" } };
-			// lightning and bomb are near-identical at a glance, so those two carry their word; water doesn't
 			const DEBUFF = {
 				water: { icon: "215696", name: null, color: null },
 				light: { icon: "215623", name: "LIGHTNING", color: "#c07dff" },
 				bomb: { icon: "215727", name: "BOMB", color: "#ff9d4d" },
 			};
 
-			// real/fake judgements in the order the boss hands them to you; R/F always hits the first unset
 			const STEPS = ["gc1rf", "c1rf", "gc2rf", "c2rf", "linerf", "conerf", "linerel", "conerel"];
 			const CARD_OF = {
 				gc1rf: "gc1",
@@ -773,7 +822,7 @@
 				my1gaze: null,
 				my1timer: null,
 				my2pick: null,
-				my2gaze: null, // my2pick: water/light choice when cast 1 gave the bomb
+				my2gaze: null,
 				c1elem: null,
 				c1rf: null,
 				c2rf: null,
@@ -784,14 +833,14 @@
 			});
 			let S = blank();
 			let HIST = [];
-			// kept out of S deliberately: your role doesn't change between pulls, so RESET must not clear it
 			let ROLE = null;
 			try {
 				ROLE = localStorage.getItem("umad-role");
 			} catch (e) {}
 
-			const el = (id) => document.getElementById(id);
-			// unset role => plain STACK/SPREAD, so a wrong default can never point you the wrong way
+			let DOC = document;
+			const el = (id) => DOC.getElementById(id);
+			const appEl = document.getElementById("app");
 			const dir = (txt) => {
 				if (!ROLE || !DIR[ROLE]) return txt;
 				if (txt === "STACK") return "STACK " + DIR[ROLE].stack;
@@ -832,7 +881,86 @@
 				render();
 			}
 
-			// single-key input — every key here is printed on its own button, nothing to memorise
+			let pipWin = null;
+			async function popout() {
+				if (pipWin) {
+					pipWin.focus();
+					return;
+				}
+				if (!("documentPictureInPicture" in window)) {
+					alert(
+						"Pop-out needs the Document Picture-in-Picture API — Chrome or Edge 116+, served over http(s) or localhost (not a file:// path). Your browser or context doesn't support it.",
+					);
+					return;
+				}
+				try {
+					const r = appEl.getBoundingClientRect();
+					pipWin = await documentPictureInPicture.requestWindow({
+						width: Math.min(Math.max(Math.ceil(r.width), 320), 640),
+						height: Math.min(Math.max(Math.ceil(r.height) + 8, 360), 940),
+					});
+				} catch (e) {
+					pipWin = null;
+					alert("Couldn't open the pop-out window: " + e.message);
+					return;
+				}
+				const base = pipWin.document.createElement("base");
+				base.href = location.href;
+				pipWin.document.head.appendChild(base);
+				document.querySelectorAll("style, link[rel=stylesheet]").forEach((n) => {
+					pipWin.document.head.appendChild(n.cloneNode(true));
+				});
+				pipWin.document.title = "UMAD P4";
+				pipWin.document.body.appendChild(appEl);
+				DOC = pipWin.document;
+				appEl.classList.add("popped");
+				document.getElementById("docked").hidden = false;
+				pipWin.addEventListener("keydown", keyHandler);
+				pipWin.document.addEventListener("click", clickHandler);
+				pipWin.addEventListener("pagehide", dockBack, { once: true });
+				render();
+			}
+			function dockBack() {
+				appEl.classList.remove("popped");
+				document.body.appendChild(appEl);
+				document.getElementById("docked").hidden = true;
+				DOC = document;
+				const w = pipWin;
+				pipWin = null;
+				if (w) w.close();
+				render();
+			}
+
+			function clickHandler(e) {
+				const b = e.target.closest("[data-act]");
+				if (!b) return;
+				const d = b.dataset;
+				switch (d.act) {
+					case "s":
+						setS(d.k, d.v);
+						break;
+					case "toggle":
+						toggleMy(d.k);
+						break;
+					case "role":
+						setRole(d.v);
+						break;
+					case "help":
+						appEl.classList.toggle("help");
+						break;
+					case "reset":
+						resetAll();
+						break;
+					case "pop":
+						popout();
+						break;
+					case "dock":
+						dockBack();
+						break;
+				}
+			}
+			document.addEventListener("click", clickHandler);
+
 			const KEYS = {
 				1: () => setS("my1main", "water"),
 				2: () => setS("my1main", "light"),
@@ -850,7 +978,7 @@
 				s: () => setS("my1timer", "short"),
 				l: () => setS("my1timer", "long"),
 			};
-			document.addEventListener("keydown", (e) => {
+			function keyHandler(e) {
 				if (e.ctrlKey || e.altKey || e.metaKey) return;
 				const k = e.key.toLowerCase();
 				if (k === "r" || k === "f") {
@@ -862,7 +990,8 @@
 					KEYS[k]();
 				} else return;
 				e.preventDefault();
-			});
+			}
+			document.addEventListener("keydown", keyHandler);
 
 			function paintRF(key) {
 				el("b-" + key + "-real").classList.toggle("on", S[key] === "real");
@@ -882,8 +1011,6 @@
 				}
 			}
 
-			// exactly one bomb + one water/light per player across both casts:
-			// water/light first -> bomb second (derived); bomb first -> user picks water/light
 			function my2main() {
 				if (S.my1main === "water" || S.my1main === "light") return "bomb";
 				if (S.my1main === "bomb") return S.my2pick;
@@ -908,14 +1035,12 @@
 					el("head-" + h).classList.toggle("fake", S[k] === "fake");
 				});
 
-				// keyboard focus: the next cast the boss will hand you
 				const step = focusStep();
 				STEPS.forEach((k) => el("rf-" + k).classList.toggle("focus", k === step));
 				["gc1", "c1", "gc2", "c2", "stored"].forEach((c) =>
 					el("card-" + c).classList.toggle("active", !!step && CARD_OF[step] === c),
 				);
 
-				// GC2 main debuff: auto bomb, or a water/light pick when cast 1 gave the bomb
 				const face = (v) =>
 					'<img src="icons/' +
 					DEBUFF[v].icon +
@@ -932,13 +1057,13 @@
 						'<span class="' +
 						cls("water") +
 						(S.my2pick === "water" ? " on" : "") +
-						"\" onclick=\"setS('my2pick','water')\">" +
+						'" data-act="s" data-k="my2pick" data-v="water">' +
 						face("water") +
 						"<kbd>6</kbd></span>" +
 						'<span class="' +
 						cls("light") +
 						(S.my2pick === "light" ? " on" : "") +
-						"\" onclick=\"setS('my2pick','light')\">" +
+						'" data-act="s" data-k="my2pick" data-v="light">' +
 						face("light") +
 						"<kbd>7</kbd></span>";
 				} else {
@@ -951,9 +1076,6 @@
 				e2.textContent = S.c1elem ? (S.c1elem === "fire" ? "🌊 TSUNAMI" : "🔥 INFERNO") : "ELEM —";
 				e2.classList.toggle("off", !S.c1elem);
 
-				// ===== resolution timeline =====
-				// Each debuff resolves once, in its cast's window (cast 2 = opposite timer).
-				// Bomb holders still take a position, so bomb shows FILL A STACK + bomb action.
 				const cast1 = { main: S.my1main, rf: S.gc1rf, src: "GC1" };
 				const cast2 = { main: my2main(), rf: S.gc2rf, src: "GC2" };
 				let winShort = null,
@@ -970,7 +1092,6 @@
 				paintTL(1, winAns(winShort));
 				paintTL(4, winAns(winLong));
 
-				// shrieks: GC1's always resolve first; add GO UNDER BOSS if the gaze is mine
 				const gazeAns = (rf, mine, tag) => {
 					const parts = [];
 					if (mine) parts.push(GOBOSS);
@@ -980,7 +1101,6 @@
 				paintTL(2, gazeAns(S.gc1rf, S.my1gaze, "GC1"));
 				paintTL(5, gazeAns(S.gc2rf, S.my2gaze, "GC2"));
 
-				// chaos: fire always resolves first; rf from whichever cast had that element
 				const chaosAns = (elem) => {
 					if (!S.c1elem) return null;
 					const rf = S.c1elem === elem ? S.c1rf : S.c2rf;
@@ -989,7 +1109,6 @@
 				paintTL(3, chaosAns("fire"));
 				paintTL(6, chaosAns("fluid"));
 
-				// stored: cast XOR fake-release
 				const stored = (m) => {
 					if (!S[m + "rf"]) return null;
 					let eff = S[m + "rf"];
