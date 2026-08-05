@@ -368,6 +368,15 @@
 			.pick.auto {
 				pointer-events: none;
 			}
+			.pick.lockd {
+				opacity: 0.3;
+			}
+			.pick.lockd:hover {
+				opacity: 0.75;
+			}
+			.pick.lockd img {
+				opacity: 0.3;
+			}
 			.pick.lbl {
 				min-width: 54px;
 			}
@@ -575,33 +584,45 @@
 							<div class="row">
 								<span class="lab">MINE</span>
 								<div class="picks">
-									<button class="pick" id="b-my1main-water" data-act="s" data-k="my1main" data-v="water">
+									<button class="pick" id="b-gc1wl-water" data-act="pick" data-k="gc1wl" data-v="water">
 										<img src="icons/215696.png" /><kbd>1</kbd>
 									</button>
-									<button class="pick lbl" id="b-my1main-light" data-act="s" data-k="my1main" data-v="light">
+									<button class="pick lbl" id="b-gc1wl-light" data-act="pick" data-k="gc1wl" data-v="light">
 										<img src="icons/215623.png" /><span class="pn" style="color: #c07dff">LIGHTNING</span><kbd>2</kbd>
 									</button>
-									<button class="pick lbl" id="b-my1main-bomb" data-act="s" data-k="my1main" data-v="bomb">
-										<img src="icons/215727.png" /><span class="pn" style="color: #ff9d4d">BOMB</span><kbd>3</kbd>
-									</button>
 								</div>
 								<div class="picks">
-									<button class="pick" id="b-my1gaze" data-act="toggle" data-k="my1gaze">
-										<img src="icons/215588.png" /><kbd>8</kbd>
+									<button class="pick" id="b-gc1gaze" data-act="toggle" data-k="gc1gaze">
+										<img src="icons/215588.png" /><kbd>5</kbd>
 									</button>
 								</div>
-								<div class="picks">
-									<button class="pick word" id="b-my1timer-short" data-act="s" data-k="my1timer" data-v="short">
+								<div class="picks" id="wrap-gc1win">
+									<button class="pick word" id="b-gc1win-short" data-act="s" data-k="wlTimer" data-v="short">
 										SHORT<kbd>S</kbd>
 									</button>
-									<button class="pick word" id="b-my1timer-long" data-act="s" data-k="my1timer" data-v="long">
+									<button class="pick word" id="b-gc1win-long" data-act="s" data-k="wlTimer" data-v="long">
 										LONG<kbd>L</kbd>
 									</button>
 								</div>
+								<span class="tag off" id="lbl-gc1win" style="margin-left: auto">W/L —</span>
+							</div>
+							<div class="row">
+								<span class="lab">💣 ACCEL</span>
+								<div class="picks">
+									<button class="pick word" id="b-gc1bomb-short" data-act="pick" data-k="gc1bomb" data-v="short">
+										SHORT<kbd>3</kbd>
+									</button>
+									<button class="pick word" id="b-gc1bomb-long" data-act="pick" data-k="gc1bomb" data-v="long">
+										LONG<kbd>4</kbd>
+									</button>
+								</div>
+								<span class="tag off" id="lbl-gc1bomb" style="margin-left: auto">💣 —</span>
 							</div>
 							<div class="note">
-								🔵/❓ covers everything this cast gives (its gazes = the SHORT shrieks). Pick your debuff (one of 💧⚡💣 — 2
-								water / 2 lightning / 4 bombs per cast), toggle 👁 if you also got a gaze, set your timer.
+								🔵/❓ covers everything this cast gives. Per cast: 2 💧 + 2 ⚡ sharing <b>one</b> timer, 4 💣 accel bombs
+								split 2 short + 2 long, and 2 👁 riding on the bomb holders. You get 💧/⚡ <b>or</b> 💣 from a cast, never
+								both. The 💧⚡ SHORT/LONG below is this pull's set timer; the other cast is automatically the opposite.
+								This cast's 👁 are always the SHORT shrieks, so they need no timer.
 							</div>
 						</div>
 
@@ -610,10 +631,10 @@
 								<div class="cast">Chaos 1 <span class="t">0:28</span></div>
 								<div class="picks">
 									<button class="pick" id="b-c1elem-fire" data-act="s" data-k="c1elem" data-v="fire">
-										<img src="icons/215902.png" /><kbd>4</kbd>
+										<img src="icons/215902.png" /><kbd>I</kbd>
 									</button>
 									<button class="pick" id="b-c1elem-fluid" data-act="s" data-k="c1elem" data-v="fluid">
-										<img src="icons/215903.png" /><kbd>5</kbd>
+										<img src="icons/215903.png" /><kbd>T</kbd>
 									</button>
 								</div>
 								<div class="rf" id="rf-c1rf">
@@ -645,17 +666,46 @@
 							</div>
 							<div class="row">
 								<span class="lab">MINE</span>
-								<div class="picks" id="my2main"></div>
 								<div class="picks">
-									<button class="pick" id="b-my2gaze" data-act="toggle" data-k="my2gaze">
-										<img src="icons/215588.png" /><kbd>9</kbd>
+									<button class="pick" id="b-gc2wl-water" data-act="pick" data-k="gc2wl" data-v="water">
+										<img src="icons/215696.png" /><kbd>6</kbd>
+									</button>
+									<button class="pick lbl" id="b-gc2wl-light" data-act="pick" data-k="gc2wl" data-v="light">
+										<img src="icons/215623.png" /><span class="pn" style="color: #c07dff">LIGHTNING</span><kbd>7</kbd>
 									</button>
 								</div>
-								<span class="tag off" id="lbl-my2timer" style="margin-left: auto">TIMER —</span>
+								<div class="picks">
+									<button class="pick" id="b-gc2gaze" data-act="toggle" data-k="gc2gaze">
+										<img src="icons/215588.png" /><kbd>0</kbd>
+									</button>
+								</div>
+								<div class="picks" id="wrap-gc2win">
+									<button class="pick word" id="b-gc2win-short" data-act="s" data-k="wlTimer" data-v="short">
+										SHORT<kbd>S</kbd>
+									</button>
+									<button class="pick word" id="b-gc2win-long" data-act="s" data-k="wlTimer" data-v="long">
+										LONG<kbd>L</kbd>
+									</button>
+								</div>
+								<span class="tag off" id="lbl-gc2win" style="margin-left: auto">W/L —</span>
+							</div>
+							<div class="row">
+								<span class="lab">💣 ACCEL</span>
+								<div class="picks">
+									<button class="pick word" id="b-gc2bomb-short" data-act="pick" data-k="gc2bomb" data-v="short">
+										SHORT<kbd>8</kbd>
+									</button>
+									<button class="pick word" id="b-gc2bomb-long" data-act="pick" data-k="gc2bomb" data-v="long">
+										LONG<kbd>9</kbd>
+									</button>
+								</div>
+								<span class="tag off" id="lbl-gc2bomb" style="margin-left: auto">💣 —</span>
 							</div>
 							<div class="note">
-								You get exactly one 💣 and one 💧/⚡ across both casts, opposite timers. Had 💧/⚡ first → 💣 now (auto).
-								Had 💣 first → pick which of 💧/⚡ you got. 👁 is independent; this cast's gazes = the LONG shrieks.
+								Across both casts you get exactly one 💧/⚡, exactly one 💣 and at most one 👁 — and your 💧/⚡ and your 💣
+								always come from <b>different</b> casts, so naming one here settles the other. Press a greyed control and
+								the debuff moves over. The 💣 timer is its own thing; it does not follow the 💧⚡ set timer. This cast's
+								👁 are always the LONG shrieks.
 							</div>
 						</div>
 
@@ -783,27 +833,9 @@
 			<button data-act="pop">Bring it back</button>
 		</div>
 
-		<script>
-			const ANSWERS = {
-				water: ["STACK", "SPREAD"],
-				light: ["SPREAD", "STACK"],
-				bomb: ["💣 STOP", "💣 KEEP MOVING"],
-				gaze: ["LOOK AWAY", "LOOK AT IT"],
-				fire: ["OUT (circle)", "IN (donut)"],
-				fluid: ["IN (donut)", "OUT (circle)"],
-				line: ["AVOID LINE", "STAND IN LINE"],
-				cone: ["AVOID CONE", "STAND IN CONE"],
-			};
-			const FILL = "FILL A STACK",
-				GOBOSS = "👁 GO UNDER BOSS";
-			const DIR = { sup: { stack: "North", spread: "West" }, dps: { stack: "South", spread: "East" } };
-			const DEBUFF = {
-				water: { icon: "215696", name: null, color: null },
-				light: { icon: "215623", name: "LIGHTNING", color: "#c07dff" },
-				bomb: { icon: "215727", name: "BOMB", color: "#ff9d4d" },
-			};
+		<script type="module">
+			import { solve, blank, apply, toggle, JUDGEMENTS } from "./solver.js";
 
-			const STEPS = ["gc1rf", "c1rf", "gc2rf", "c2rf", "linerf", "conerf", "linerel", "conerel"];
 			const CARD_OF = {
 				gc1rf: "gc1",
 				c1rf: "c1",
@@ -815,22 +847,6 @@
 				conerel: "stored",
 			};
 
-			const blank = () => ({
-				gc1rf: null,
-				gc2rf: null,
-				my1main: null,
-				my1gaze: null,
-				my1timer: null,
-				my2pick: null,
-				my2gaze: null,
-				c1elem: null,
-				c1rf: null,
-				c2rf: null,
-				linerf: null,
-				linerel: null,
-				conerf: null,
-				conerel: null,
-			});
 			let S = blank();
 			let HIST = [];
 			let ROLE = null;
@@ -841,26 +857,20 @@
 			let DOC = document;
 			const el = (id) => DOC.getElementById(id);
 			const appEl = document.getElementById("app");
-			const dir = (txt) => {
-				if (!ROLE || !DIR[ROLE]) return txt;
-				if (txt === "STACK") return "STACK " + DIR[ROLE].stack;
-				if (txt === "SPREAD") return "SPREAD " + DIR[ROLE].spread;
-				if (txt === FILL) return FILL + " " + DIR[ROLE].stack;
-				return txt;
-			};
-			const ans = (mech, rf) => dir(ANSWERS[mech][rf === "real" ? 0 : 1]);
-			const src = (c) => ' <span class="src">' + c + "</span>";
-			const focusStep = () => STEPS.find((k) => !S[k]) || null;
 
-			function setS(key, val) {
+			function commit(next) {
 				HIST.push(JSON.stringify(S));
-				S[key] = val;
+				S = next;
 				render();
 			}
+			function setS(key, val) {
+				commit(apply(S, key, val));
+			}
+			function pickS(key, val) {
+				commit(toggle(S, key, val));
+			}
 			function toggleMy(k) {
-				HIST.push(JSON.stringify(S));
-				S[k] = S[k] ? null : true;
-				render();
+				commit(toggle(S, k, true));
 			}
 			function resetAll() {
 				HIST.push(JSON.stringify(S));
@@ -939,6 +949,9 @@
 					case "s":
 						setS(d.k, d.v);
 						break;
+					case "pick":
+						pickS(d.k, d.v);
+						break;
 					case "toggle":
 						toggleMy(d.k);
 						break;
@@ -962,27 +975,26 @@
 			document.addEventListener("click", clickHandler);
 
 			const KEYS = {
-				1: () => setS("my1main", "water"),
-				2: () => setS("my1main", "light"),
-				3: () => setS("my1main", "bomb"),
-				4: () => setS("c1elem", "fire"),
-				5: () => setS("c1elem", "fluid"),
-				6: () => {
-					if (S.my1main === "bomb") setS("my2pick", "water");
-				},
-				7: () => {
-					if (S.my1main === "bomb") setS("my2pick", "light");
-				},
-				8: () => toggleMy("my1gaze"),
-				9: () => toggleMy("my2gaze"),
-				s: () => setS("my1timer", "short"),
-				l: () => setS("my1timer", "long"),
+				1: () => pickS("gc1wl", "water"),
+				2: () => pickS("gc1wl", "light"),
+				3: () => pickS("gc1bomb", "short"),
+				4: () => pickS("gc1bomb", "long"),
+				5: () => toggleMy("gc1gaze"),
+				6: () => pickS("gc2wl", "water"),
+				7: () => pickS("gc2wl", "light"),
+				8: () => pickS("gc2bomb", "short"),
+				9: () => pickS("gc2bomb", "long"),
+				0: () => toggleMy("gc2gaze"),
+				i: () => setS("c1elem", "fire"),
+				t: () => setS("c1elem", "fluid"),
+				s: () => setS("wlTimer", "short"),
+				l: () => setS("wlTimer", "long"),
 			};
 			function keyHandler(e) {
 				if (e.ctrlKey || e.altKey || e.metaKey) return;
 				const k = e.key.toLowerCase();
 				if (k === "r" || k === "f") {
-					const step = focusStep();
+					const step = solve(S, ROLE).derived.focus;
 					if (step) setS(step, k === "r" ? "real" : "fake");
 				} else if (k === "backspace") {
 					undo();
@@ -1011,19 +1023,64 @@
 				}
 			}
 
-			function my2main() {
-				if (S.my1main === "water" || S.my1main === "light") return "bomb";
-				if (S.my1main === "bomb") return S.my2pick;
-				return null;
+			const ROW_OF = {
+				exShort: 1,
+				shrieksShort: 2,
+				inferno: 3,
+				exLong: 4,
+				shrieksLong: 5,
+				tsunami: 6,
+				stored: 7,
+			};
+			const WINDOW_LBL = { short: "SHORT", long: "LONG" };
+
+			function paintParts(parts) {
+				if (!parts.length) return null;
+				return parts.map((p) => p.text + (p.src ? ' <span class="src">' + p.src + "</span>" : "")).join(" + ");
+			}
+			function paintTag(id, text, muted) {
+				const t = el(id);
+				t.textContent = text;
+				t.classList.toggle("off", muted);
 			}
 
 			function render() {
-				STEPS.forEach(paintRF);
+				const { timeline, derived } = solve(S, ROLE);
+
+				JUDGEMENTS.forEach(paintRF);
 				["sup", "dps"].forEach((r) => el("b-role-" + r).classList.toggle("on", ROLE === r));
-				["water", "light", "bomb"].forEach((v) => el("b-my1main-" + v).classList.toggle("on", S.my1main === v));
-				["my1gaze", "my2gaze"].forEach((k) => el("b-" + k).classList.toggle("on", !!S[k]));
-				["short", "long"].forEach((v) => el("b-my1timer-" + v).classList.toggle("on", S.my1timer === v));
 				["fire", "fluid"].forEach((v) => el("b-c1elem-" + v).classList.toggle("on", S.c1elem === v));
+
+				["gc1", "gc2"].forEach((c) => {
+					["water", "light"].forEach((v) => {
+						const b = el("b-" + c + "wl-" + v);
+						b.classList.toggle("on", S[c + "wl"] === v);
+						b.classList.toggle("lockd", derived.locked[c + "wl"]);
+					});
+					["short", "long"].forEach((v) => {
+						const b = el("b-" + c + "bomb-" + v);
+						b.classList.toggle("on", S[c + "bomb"] === v);
+						b.classList.toggle("lockd", derived.locked[c + "bomb"]);
+						el("b-" + c + "win-" + v).classList.toggle("on", S.wlTimer === v);
+					});
+					const g = el("b-" + c + "gaze");
+					g.classList.toggle("on", !!S[c + "gaze"]);
+					g.classList.toggle("lockd", derived.locked[c + "gaze"]);
+
+					const owns = derived.wlOwner === c;
+					el("wrap-" + c + "win").style.display = owns ? "" : "none";
+					const win = derived.wlWindow[c];
+					paintTag(
+						c === "gc1" ? "lbl-gc1win" : "lbl-gc2win",
+						win ? "💧⚡ " + WINDOW_LBL[win] : "💧⚡ —",
+						!win || owns,
+					);
+					paintTag(
+						c === "gc1" ? "lbl-gc1bomb" : "lbl-gc2bomb",
+						derived.locked[c + "bomb"] ? "💣 NONE" : S[c + "bomb"] ? "💣 " + WINDOW_LBL[S[c + "bomb"]] : "💣 —",
+						!S[c + "bomb"],
+					);
+				});
 
 				[
 					["gc1", "gc1rf"],
@@ -1035,89 +1092,19 @@
 					el("head-" + h).classList.toggle("fake", S[k] === "fake");
 				});
 
-				const step = focusStep();
-				STEPS.forEach((k) => el("rf-" + k).classList.toggle("focus", k === step));
+				const step = derived.focus;
+				JUDGEMENTS.forEach((k) => el("rf-" + k).classList.toggle("focus", k === step));
 				["gc1", "c1", "gc2", "c2", "stored"].forEach((c) =>
 					el("card-" + c).classList.toggle("active", !!step && CARD_OF[step] === c),
 				);
 
-				const face = (v) =>
-					'<img src="icons/' +
-					DEBUFF[v].icon +
-					'.png">' +
-					(DEBUFF[v].name
-						? '<span class="pn" style="color:' + DEBUFF[v].color + '">' + DEBUFF[v].name + "</span>"
-						: "");
-				const cls = (v) => "pick" + (DEBUFF[v].name ? " lbl" : "");
-				if (S.my1main === "water" || S.my1main === "light") {
-					el("my2main").innerHTML =
-						'<span class="' + cls("bomb") + ' auto on">' + face("bomb") + "</span>" + '<span class="tag">AUTO</span>';
-				} else if (S.my1main === "bomb") {
-					el("my2main").innerHTML =
-						'<span class="' +
-						cls("water") +
-						(S.my2pick === "water" ? " on" : "") +
-						'" data-act="s" data-k="my2pick" data-v="water">' +
-						face("water") +
-						"<kbd>6</kbd></span>" +
-						'<span class="' +
-						cls("light") +
-						(S.my2pick === "light" ? " on" : "") +
-						'" data-act="s" data-k="my2pick" data-v="light">' +
-						face("light") +
-						"<kbd>7</kbd></span>";
-				} else {
-					el("my2main").innerHTML = '<span class="tag off">—</span>';
-				}
-				const t2 = el("lbl-my2timer");
-				t2.textContent = S.my1timer ? (S.my1timer === "short" ? "LONG" : "SHORT") : "TIMER —";
-				t2.classList.toggle("off", !S.my1timer);
-				const e2 = el("lbl-c2elem");
-				e2.textContent = S.c1elem ? (S.c1elem === "fire" ? "🌊 TSUNAMI" : "🔥 INFERNO") : "ELEM —";
-				e2.classList.toggle("off", !S.c1elem);
+				paintTag(
+					"lbl-c2elem",
+					derived.c2elem ? (derived.c2elem === "fire" ? "🔥 INFERNO" : "🌊 TSUNAMI") : "ELEM —",
+					!derived.c2elem,
+				);
 
-				const cast1 = { main: S.my1main, rf: S.gc1rf, src: "GC1" };
-				const cast2 = { main: my2main(), rf: S.gc2rf, src: "GC2" };
-				let winShort = null,
-					winLong = null;
-				if (S.my1timer) [winShort, winLong] = S.my1timer === "short" ? [cast1, cast2] : [cast2, cast1];
-
-				const winAns = (c) => {
-					if (!c || !c.main) return null;
-					if (c.main !== "bomb") return c.rf ? ans(c.main, c.rf) + src(c.src) : null;
-					const parts = [dir(FILL)];
-					if (c.rf) parts.push(ans("bomb", c.rf) + src(c.src));
-					return parts.join(" + ");
-				};
-				paintTL(1, winAns(winShort));
-				paintTL(4, winAns(winLong));
-
-				const gazeAns = (rf, mine, tag) => {
-					const parts = [];
-					if (mine) parts.push(GOBOSS);
-					if (rf) parts.push(ans("gaze", rf) + src(tag));
-					return parts.length ? parts.join(" + ") : null;
-				};
-				paintTL(2, gazeAns(S.gc1rf, S.my1gaze, "GC1"));
-				paintTL(5, gazeAns(S.gc2rf, S.my2gaze, "GC2"));
-
-				const chaosAns = (elem) => {
-					if (!S.c1elem) return null;
-					const rf = S.c1elem === elem ? S.c1rf : S.c2rf;
-					return rf ? ans(elem, rf) : null;
-				};
-				paintTL(3, chaosAns("fire"));
-				paintTL(6, chaosAns("fluid"));
-
-				const stored = (m) => {
-					if (!S[m + "rf"]) return null;
-					let eff = S[m + "rf"];
-					if (S[m + "rel"] === "fake") eff = eff === "real" ? "fake" : "real";
-					return ans(m, eff);
-				};
-				const ln = stored("line"),
-					cn = stored("cone");
-				paintTL(7, ln || cn ? [ln, cn].filter(Boolean).join(" + ") : null);
+				Object.entries(ROW_OF).forEach(([id, n]) => paintTL(n, paintParts(timeline[id])));
 			}
 
 			render();

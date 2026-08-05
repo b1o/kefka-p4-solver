@@ -22,18 +22,72 @@ the stated mechanic.
 
 ## Grand Cross debuffs
 
-Per cast: **2 water, 2 lightning, 4 bombs** (water/lightning = 1 DPS + 1 support each; bomb =
-everyone else), plus **2 gazes** applied *on top of* a main debuff.
+Sourced from the [wtfdig UMAD P4 guide](https://wtfdig.info/ultimates/umad), corroborated by
+[Materia Raiding](https://materiaraiding.com/ultimate/dmu) and
+[Icy Veins](https://www.icy-veins.com/ffxiv/dancing-mad-ultimate-phase-4-guide). Real debuff names:
+Compressed Water, Forked Lightning, Acceleration Bomb, Cursed Shriek.
+
+| Per cast | Count | Timer |
+|---|---|---|
+| 💧 Compressed Water + ⚡ Forked Lightning | 2 + 2 (1 DPS + 1 support each) | **one timer for the whole set.** "One cast will have Short timer, other will be Long" |
+| 💣 Acceleration Bomb | 4 | **split 2 short + 2 long**, per cast |
+| 👁 Cursed Shriek | 2, riding on top | fixed by cast: "1st applied Shriek has short timer, 2nd has long timer" |
+
+A GC1 short and a GC2 short expire together, so there are exactly two resolution windows. Measured
+durations are in the table below.
 
 Per player across both casts:
-- Exactly **one 💣** and exactly **one 💧/⚡**, with **opposite timers** (one short, one long).
-- Timer is per player — one cast hands out both short and long (short ≈ 51s/36s, long ≈ 75s/60s
-  depending on cast). Read your own debuff bar.
-- Gaze 👁 does **not** follow the complement rule — it can ride on any main debuff, either cast.
-- GC1's gazes are always the **short** shrieks, GC2's the **long** ones (fixed order).
+- Exactly **one 💧/⚡**. Its window is that cast's set timer, not a personal roll.
+- Exactly **one 💣**, with **its own** short/long — the one genuinely free timer in the mechanic.
+- **At most one 👁**, riding on top of that cast's 💣 — never on a water/lightning holder, never
+  alone. 4 shrieks over 8 players, so half the raid has none.
+- Your 💧/⚡ and your 💣 always come from **different casts**. Each cast fills its 8 players with
+  2 water + 2 lightning + 4 bombs, and the two groups never overlap.
 
-**Derivable:** got 💧/⚡ on cast 1 → cast 2 gives 💣, opposite timer. **Not derivable:** got 💣 on
-cast 1 → cast 2 gives 💧 *or* ⚡ (must ask); whether you have a gaze (must ask, per cast).
+Because of those two, a 👁 on a cast implies your 💣 is on that cast, which implies your 💧/⚡ is on
+the other one.
+
+### Measured, not assumed
+
+Checked against FFLogs with [tools/fflogs-survey.js](tools/fflogs-survey.js), which needs no API
+key. Sample: **35 phase-4 pulls across 14 public reports, 560 player-casts.**
+
+| Check | Violations |
+|---|---|
+| A player holding both 💧/⚡ and 💣 from one cast | **0 / 560** |
+| Water/lightning durations not uniform within a cast | **0 / 70 casts** |
+| Bombs not exactly 2 short + 2 long per cast | **0 / 70 casts** |
+| Not exactly 2 water + 2 lightning per cast | **0 / 70 casts** |
+| Players without exactly one 💧/⚡ across the pull | **0 / 280** |
+| Players without exactly one 💣 across the pull | **0 / 280** |
+| Players with more than one 👁 | **0 / 280** |
+| 👁 landing on a non-bomb holder | **0 / 140 shrieks** |
+
+### Exact durations
+
+Every pull was identical apart from one coin flip. Grand Cross 1 lands 24s into the phase, Grand
+Cross 2 at 39s.
+
+| | 💧/⚡ (2 water + 2 lightning) | 💣 Accel Bomb ×4 | 👁 Shriek ×2 |
+|---|---|---|---|
+| **GC1** | 4 × **51s** *or* 4 × **76s** | 2 × 51s + 2 × 76s | 2 × 60s |
+| **GC2** | 4 × **61s** *or* 4 × **36s** (always opposite GC1) | 2 × 36s + 2 × 61s | 2 × 69s |
+
+Everything lands in two windows. 51s-from-GC1 and 36s-from-GC2 both expire at **75s**; 76s-from-GC1
+and 61s-from-GC2 both expire at **100s**. Shrieks expire at 84s and 108s, after each window.
+
+The **only** thing that varies between pulls is which cast owns the short water/lightning set — 20
+pulls had GC1 short, 15 had GC1 long. That single coin flip is exactly what the tool's `S`/`L` input
+records. The bomb split and both shriek timers never varied at all, which is why the bomb needs its
+own input and the gaze needs none.
+
+That split is what makes the positions work. The short window holds one cast's 4 water/lightning
+holders **plus** the 4 short bombs: per role group that is 1 water + 2 bombs filling a 3-person
+stack, and 1 lightning spreading.
+
+**Derivable:** which cast holds your 💧/⚡ (the one that did not give you your 💣 — or your 👁);
+the other cast's set timer (the opposite); your gaze's window (fixed by its cast). **Not derivable:**
+your element, your 💧/⚡ set timer, your bomb's cast and timer, and whether you have a gaze.
 
 ## Real/fake answer table
 
@@ -60,23 +114,37 @@ Positions for 1 & 4: **supports stack N / spread W, DPS stack S / spread E**; pe
 1 spread. The tool's SUP/DPS toggle only appends that letter to the stack/spread wording — no
 mechanic branches on it.
 
-1. **Exdeath SHORT** — your short-timer debuff resolves: 💧/⚡ → stack/spread per table;
-   💣 → fill a stack + bomb action. Each debuff resolves exactly once.
+1. **Exdeath SHORT** — everything of yours on a short timer resolves together. Your 💧/⚡ if its
+   set is short → stack/spread per table; otherwise **fill a stack**. Your 💣 if it is short →
+   bomb action, **on top**. A window can therefore carry two answers from two different casts, each
+   judged by its own cast's real/fake.
 2. **Short shrieks** — GC1's real/fake decides look away/at; if your gaze came from GC1, go under
    the boss.
 3. **Inferno** resolves.
-4. **Exdeath LONG** — same as 1 with your long-timer debuff.
+4. **Exdeath LONG** — same as 1 for everything of yours on a long timer.
 5. **Long shrieks** — GC2's real/fake; GC2 gaze holders go under the boss. Align N/S to see both.
 6. **Tsunami** resolves.
 7. **Stored combo** — dodge line + cone (post-release values). Enrage at 25% HP.
 
 ## Tool shape
 
-Inputs (in cast order): GC1 real/fake + my debuff (radio 💧⚡💣) + 👁 toggle + my timer
-(SHORT/LONG); Chaos1 element + real/fake; GC2 real/fake (+ 💧/⚡ pick only if bomb came first,
-+ 👁 toggle); Chaos2 real/fake; line & cone real/fake + release real/fake each.
-Everything else is derived. Output: the 7 rows above with personal answers, each tagged with its
-source cast (GC1/GC2).
+The mechanic lives in [solver.js](solver.js) as one pure function, `solve(state, role)`. It has no
+DOM access, so [solver.test.js](solver.test.js) drives it directly (`bun test`). `index.html` only
+writes state and paints what comes back.
+
+Inputs, per Grand Cross: real/fake, 💧/⚡ pick, 💣 SHORT/LONG, 👁 toggle, plus **one** 💧⚡
+SHORT/LONG for the pull. That last one is a fact about the *cast*, not about you, so it is rendered
+on a single card — the one holding your water/lightning — and the other card shows the opposite as
+a tag. The gaze needs no timer at all: its cast fixes it.
+
+Your 💧/⚡, your 💣 and your 👁 are each one-per-pull, and the first two are also mutually exclusive
+within a cast, so naming any one of them narrows the rest. Picking one greys the others out — but a
+greyed control still works and moves the debuff over, because mid-pull you correct a mispress by
+pressing the right key, not by undoing first. Then: Chaos1 element + real/fake, Chaos2 real/fake,
+line & cone real/fake + release real/fake each.
+
+Output: the 7 rows above, each an array of `{ text, src }` parts. An empty array means "not known
+yet", so partial input gives partial answers with no special path.
 
 The 8 real/fake judgements (`gc1rf, c1rf, gc2rf, c2rf, linerf, conerf, linerel, conerel`) form a
 fixed sequence in boss order; the tool highlights the first unset one and `R`/`F` act on it. That
