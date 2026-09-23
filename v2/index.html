@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>UMAD P4 · v2</title>
+		<link rel="stylesheet" href="styles.css" />
+	</head>
+	<body>
+		<div id="app">
+			<div class="overlay-ctl">
+				<button class="ovl-dock" data-act="settings" aria-label="Open settings">SETTINGS</button>
+				<button class="ovl-dock" data-act="undo" aria-label="Undo the last input">UNDO</button>
+				<button class="ovl-dock" data-act="reset">RESET</button>
+				<button class="ovl-dock" data-act="dock">DOCK ▢</button>
+			</div>
+			<div id="appbody">
+				<div class="bar">
+					<div class="brand">🤡 UMAD P4 — Real / Fake</div>
+					<a class="original-link" href="../">Original</a>
+					<button id="btn-undo" data-act="undo" aria-label="Undo the last input" title="Undo the last input">↶</button>
+					<button id="btn-pop" data-act="pop" aria-label="Open a floating window" title="Pop out as an always-on-top overlay">⧉</button>
+					<button id="btn-help" data-act="help" aria-label="Show hints" aria-pressed="false">?</button>
+					<button id="btn-settings" data-act="settings" aria-label="Open settings" title="Settings">⚙</button>
+					<button id="btn-reset" data-act="reset">RESET</button>
+				</div>
+
+				<div class="wrap">
+					<div class="col">
+						<div class="sec">Casts — press as they happen</div>
+						<div class="role">
+							<button id="b-role-sup" data-act="role" data-v="sup">SUP</button>
+							<button id="b-role-dps" data-act="role" data-v="dps">DPS</button>
+						</div>
+
+						<div class="card" id="card-gc1">
+							<div class="head" id="head-gc1">
+								<div class="cast">Grand Cross 1</div>
+								<div class="rf" id="rf-gc1rf">
+									<button class="rf-btn real" id="b-gc1rf-real" data-act="s" data-k="gc1rf" data-v="real" aria-label="Grand Cross 1: real">
+										<span>🔵</span>
+									</button>
+									<button class="rf-btn fake" id="b-gc1rf-fake" data-act="s" data-k="gc1rf" data-v="fake" aria-label="Grand Cross 1: fake">
+										<span>❓</span>
+									</button>
+								</div>
+							</div>
+							<div class="row">
+								<span class="lab">MINE</span>
+								<div class="picks">
+									<button class="pick" id="b-gc1wl-water" data-act="pick" data-k="gc1wl" data-v="water" aria-label="Grand Cross 1: water">
+										<img src="../icons/215696.png" alt="" draggable="false" />
+									</button>
+									<button class="pick lbl" id="b-gc1wl-light" data-act="pick" data-k="gc1wl" data-v="light" aria-label="Grand Cross 1: lightning">
+										<img src="../icons/215623.png" alt="" draggable="false" /><span class="pn" style="color: #c07dff">LIGHTNING</span>
+									</button>
+								</div>
+								<div class="picks">
+									<button class="pick" id="b-gc1gaze" data-act="toggle" data-k="gc1gaze" aria-label="Grand Cross 1: gaze holder">
+										<img src="../icons/215588.png" alt="" draggable="false" />
+									</button>
+								</div>
+								<div class="picks" id="wrap-gc1win">
+									<button class="pick word" id="b-gc1win-short" data-act="s" data-k="wlTimer" data-v="short" aria-label="Grand Cross 1 water or lightning: short">
+										SHORT
+									</button>
+									<button class="pick word" id="b-gc1win-long" data-act="s" data-k="wlTimer" data-v="long" aria-label="Grand Cross 1 water or lightning: long">
+										LONG
+									</button>
+								</div>
+								<span class="tag off" id="lbl-gc1win" style="margin-left: auto">W/L —</span>
+							</div>
+							<div class="row">
+								<span class="pick lbl auto bomb-icon" id="icon-gc1bomb" role="img" aria-label="Acceleration bomb"><img src="../icons/215727.png" alt="" draggable="false" /><span class="pn">BOMB</span></span>
+								<div class="picks">
+									<button class="pick word" id="b-gc1bomb-short" data-act="pick" data-k="gc1bomb" data-v="short" aria-label="Grand Cross 1 bomb: short">
+										SHORT
+									</button>
+									<button class="pick word" id="b-gc1bomb-long" data-act="pick" data-k="gc1bomb" data-v="long" aria-label="Grand Cross 1 bomb: long">
+										LONG
+									</button>
+								</div>
+								<span class="tag off" id="lbl-gc1bomb" style="margin-left: auto">💣 —</span>
+							</div>
+							<div class="note">
+								🔵/❓ covers everything this cast gives. Per cast: 2 💧 + 2 ⚡ sharing <b>one</b> timer, 4 💣 accel bombs
+								split 2 short + 2 long, and 2 👁 riding on the bomb holders. You get 💧/⚡ <b>or</b> 💣 from a cast, never
+								both. The 💧⚡ SHORT/LONG below is this pull's set timer; the other cast is automatically the opposite.
+								This cast's 👁 are always the SHORT shrieks, so they need no timer.
+							</div>
+						</div>
+
+						<div class="card" id="card-c1">
+							<div class="head" id="head-c1">
+								<div class="cast">Chaos 1</div>
+								<div class="picks">
+									<button class="pick" id="b-c1elem-fire" data-act="s" data-k="c1elem" data-v="fire" aria-label="Chaos 1: Inferno">
+										<img src="../icons/215902.png" alt="" draggable="false" />
+									</button>
+									<button class="pick" id="b-c1elem-fluid" data-act="s" data-k="c1elem" data-v="fluid" aria-label="Chaos 1: Tsunami">
+										<img src="../icons/215903.png" alt="" draggable="false" />
+									</button>
+								</div>
+								<div class="rf" id="rf-c1rf">
+									<button class="rf-btn real" id="b-c1rf-real" data-act="s" data-k="c1rf" data-v="real" aria-label="Chaos 1: real">
+										<span>🔵</span>
+									</button>
+									<button class="rf-btn fake" id="b-c1rf-fake" data-act="s" data-k="c1rf" data-v="fake" aria-label="Chaos 1: fake">
+										<span>❓</span>
+									</button>
+								</div>
+							</div>
+							<div class="note">
+								Record Real/Fake when Chaos casts. Select Inferno or Tsunami when the debuff appears. Chaos 2 always applies the other element.
+							</div>
+						</div>
+
+						<div class="card" id="card-gc2">
+							<div class="head" id="head-gc2">
+								<div class="cast">Grand Cross 2</div>
+								<div class="rf" id="rf-gc2rf">
+									<button class="rf-btn real" id="b-gc2rf-real" data-act="s" data-k="gc2rf" data-v="real" aria-label="Grand Cross 2: real">
+										<span>🔵</span>
+									</button>
+									<button class="rf-btn fake" id="b-gc2rf-fake" data-act="s" data-k="gc2rf" data-v="fake" aria-label="Grand Cross 2: fake">
+										<span>❓</span>
+									</button>
+								</div>
+							</div>
+							<div class="row">
+								<span class="lab">MINE</span>
+								<div class="picks">
+									<button class="pick" id="b-gc2wl-water" data-act="pick" data-k="gc2wl" data-v="water" aria-label="Grand Cross 2: water">
+										<img src="../icons/215696.png" alt="" draggable="false" />
+									</button>
+									<button class="pick lbl" id="b-gc2wl-light" data-act="pick" data-k="gc2wl" data-v="light" aria-label="Grand Cross 2: lightning">
+										<img src="../icons/215623.png" alt="" draggable="false" /><span class="pn" style="color: #c07dff">LIGHTNING</span>
+									</button>
+								</div>
+								<div class="picks">
+									<button class="pick" id="b-gc2gaze" data-act="toggle" data-k="gc2gaze" aria-label="Grand Cross 2: gaze holder">
+										<img src="../icons/215588.png" alt="" draggable="false" />
+									</button>
+								</div>
+								<div class="picks" id="wrap-gc2win">
+									<button class="pick word" id="b-gc2win-short" data-act="s" data-k="wlTimer" data-v="short" aria-label="Grand Cross 2 water or lightning: short">
+										SHORT
+									</button>
+									<button class="pick word" id="b-gc2win-long" data-act="s" data-k="wlTimer" data-v="long" aria-label="Grand Cross 2 water or lightning: long">
+										LONG
+									</button>
+								</div>
+								<span class="tag off" id="lbl-gc2win" style="margin-left: auto">W/L —</span>
+							</div>
+							<div class="row">
+								<span class="pick lbl auto bomb-icon" id="icon-gc2bomb" role="img" aria-label="Acceleration bomb"><img src="../icons/215727.png" alt="" draggable="false" /><span class="pn">BOMB</span></span>
+								<div class="picks">
+									<button class="pick word" id="b-gc2bomb-short" data-act="pick" data-k="gc2bomb" data-v="short" aria-label="Grand Cross 2 bomb: short">
+										SHORT
+									</button>
+									<button class="pick word" id="b-gc2bomb-long" data-act="pick" data-k="gc2bomb" data-v="long" aria-label="Grand Cross 2 bomb: long">
+										LONG
+									</button>
+								</div>
+								<span class="tag off" id="lbl-gc2bomb" style="margin-left: auto">💣 —</span>
+							</div>
+							<div class="note">
+								Across both casts you get exactly one 💧/⚡, exactly one 💣 and at most one 👁 — and your 💧/⚡ and your 💣
+								always come from <b>different</b> casts, so naming one here settles the other. Press a greyed control and
+								the debuff moves over. The 💣 timer is its own thing; it does not follow the 💧⚡ set timer. This cast's
+								👁 are always the LONG shrieks.
+							</div>
+						</div>
+
+						<div class="card" id="card-c2">
+							<div class="head" id="head-c2">
+								<div class="cast">Chaos 2</div>
+								<span class="tag off" id="lbl-c2elem">ELEM —</span>
+								<div class="rf" id="rf-c2rf">
+									<button class="rf-btn real" id="b-c2rf-real" data-act="s" data-k="c2rf" data-v="real" aria-label="Chaos 2: real">
+										<span>🔵</span>
+									</button>
+									<button class="rf-btn fake" id="b-c2rf-fake" data-act="s" data-k="c2rf" data-v="fake" aria-label="Chaos 2: fake">
+										<span>❓</span>
+									</button>
+								</div>
+							</div>
+						</div>
+
+						<div class="card" id="card-stored">
+							<div class="mtx stored-casts" role="group" aria-label="Stored casts">
+								<div class="mtx-h"></div>
+								<div class="mtx-l">⚡ Thunder <small>Line</small></div>
+								<div class="mtx-l">❄️ Blizzard <small>Cone</small></div>
+
+								<div class="mtx-h">CAST</div>
+								<div class="rf" id="rf-linerf">
+									<button class="rf-btn real" id="b-linerf-real" data-act="s" data-k="linerf" data-v="real" aria-label="Thunder cast: real">
+										<span>🔵</span>
+									</button>
+									<button class="rf-btn fake" id="b-linerf-fake" data-act="s" data-k="linerf" data-v="fake" aria-label="Thunder cast: fake">
+										<span>❓</span>
+									</button>
+								</div>
+								<div class="rf" id="rf-conerf">
+									<button class="rf-btn real" id="b-conerf-real" data-act="s" data-k="conerf" data-v="real" aria-label="Blizzard cast: real">
+										<span>🔵</span>
+									</button>
+									<button class="rf-btn fake" id="b-conerf-fake" data-act="s" data-k="conerf" data-v="fake" aria-label="Blizzard cast: fake">
+										<span>❓</span>
+									</button>
+								</div>
+							</div>
+							<div class="mtx stored-release" role="group" aria-label="Release: Thunder above Blizzard">
+								<div class="mtx-h release-label">RELEASE</div>
+								<div class="mtx-l">⚡ Thunder <small>Line</small></div>
+								<div class="rf" id="rf-linerel">
+									<button class="rf-btn real" id="b-linerel-real" data-act="s" data-k="linerel" data-v="real" aria-label="Thunder release: real">
+										<span>🔵</span>
+									</button>
+									<button class="rf-btn fake" id="b-linerel-fake" data-act="s" data-k="linerel" data-v="fake" aria-label="Thunder release: fake">
+										<span>❓</span>
+									</button>
+								</div>
+								<div class="mtx-l">❄️ Blizzard <small>Cone</small></div>
+								<div class="rf" id="rf-conerel">
+									<button class="rf-btn real" id="b-conerel-real" data-act="s" data-k="conerel" data-v="real" aria-label="Blizzard release: real">
+										<span>🔵</span>
+									</button>
+									<button class="rf-btn fake" id="b-conerel-fake" data-act="s" data-k="conerel" data-v="fake" aria-label="Blizzard release: fake">
+										<span>❓</span>
+									</button>
+								</div>
+							</div>
+							<div class="note">
+								Thunder III and Blizzard III are stored. A real release keeps the stored cast; a fake release reverses it.
+								For Release, Thunder is the top ring and Blizzard is the bottom ring. Step 6 combines these actions with Tsunami.
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="sec">Resolution — what YOU do</div>
+
+						<div class="tl" id="tl-1" role="group" aria-label="Step 1: Exdeath short" style="--accent: #4dc3ff">
+							<div class="num">1</div>
+							<div class="ans none" id="tla-1">—</div>
+							<div class="hint">
+								supports stack N / spread W · DPS stack S / spread E — 3 stack + 1 spread per group · resolve 💣 if it
+								pops
+							</div>
+						</div>
+						<div class="tl" id="tl-2" role="group" aria-label="Step 2: First gaze" style="--accent: #ff9d4d">
+							<div class="num">2</div>
+							<div class="ans none" id="tla-2">—</div>
+							<div class="hint">shrieks go off under the boss (+ Kefka dodges)</div>
+						</div>
+						<div class="tl" id="tl-3" role="group" aria-label="Step 3: Inferno" style="--accent: #ff6b4d">
+							<div class="num">3</div>
+							<div class="ans none" id="tla-3">—</div>
+							<div class="hint">puddles mid · raidwide hits first — if donut, WAIT, don't get baited</div>
+						</div>
+						<div class="tl" id="tl-4" role="group" aria-label="Step 4: Exdeath long" style="--accent: #4dc3ff">
+							<div class="num">4</div>
+							<div class="ans none" id="tla-4">—</div>
+							<div class="hint">
+								supports stack N / spread W · DPS stack S / spread E — 3 stack + 1 spread per group · resolve 💣 if it
+								pops
+							</div>
+						</div>
+						<div class="tl" id="tl-5" role="group" aria-label="Step 5: Second gaze" style="--accent: #ff9d4d">
+							<div class="num">5</div>
+							<div class="ans none" id="tla-5">—</div>
+							<div class="hint">align N/S with the boss to see both shrieks</div>
+						</div>
+						<div class="tl" id="tl-6" role="group" aria-label="Step 6: Tsunami and stored spells" style="--accent: #4dead5">
+							<div class="num">6</div>
+							<div class="ans none" id="tla-6">—</div>
+							<div class="hint">puddles mid · explodes ~5s after debuff expires · combine with both stored casts · enrage @ 25% HP</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<dialog id="settings" aria-labelledby="settings-title">
+				<form method="dialog" class="settings-content">
+					<div class="settings-heading"><h2 id="settings-title">Settings</h2><button type="submit" aria-label="Close settings">Done</button></div>
+					<fieldset class="layout-setting"><legend>Layout</legend><label><input type="radio" name="layout" value="vertical" data-setting="layout" /> Vertical</label><label><input type="radio" name="layout" value="horizontal" data-setting="layout" /> Horizontal</label></fieldset>
+					<p class="setting-hint">Horizontal places resolutions beside inputs in wider windows.</p>
+					<label class="range-label" for="icon-size">Icon size <output id="icon-size-value" for="icon-size">30 px</output></label>
+					<input id="icon-size" type="range" min="24" max="42" step="1" value="30" data-setting="iconSize" />
+					<label class="range-label" for="font-scale">Text size <output id="font-scale-value" for="font-scale">100%</output></label>
+					<input id="font-scale" type="range" min="0.85" max="1.3" step="0.05" value="1" data-setting="fontScale" />
+					<div class="settings-preview" aria-label="Resolution preview"><span class="num" style="--accent: #4dc3ff">1</span><div class="ans"><div class="resolution-part"><span>FILL A STACK NORTH</span><span class="source-icons"><span class="source-icon fake" role="img" aria-label="Fake lightning"><img src="../icons/215623.png" alt="" /><span class="source-verdict" aria-hidden="true">?</span></span></span></div></div></div>
+					<p class="setting-hint">Inputs, role, Undo history, and settings save automatically. Reset starts a new phase.</p>
+					<p class="storage-warning" id="storage-warning" hidden>Saving is unavailable in this browser. You can still use the helper.</p>
+					<button type="button" data-act="settings-defaults">Restore display defaults</button>
+				</form>
+			</dialog>
+		</div>
+
+		<div id="docked" hidden>
+			<div>Panel is floating in a pop-out window.</div>
+			<button data-act="pop">Bring it back</button>
+		</div>
+
+		<script type="module" src="app.js"></script>
+	</body>
+</html>
